@@ -4,9 +4,14 @@ const Book = require("../models/Book");
 const uploadBook = async (req, res) => {
     try {
 
+        const pdfFile = req.files["pdf"]?.[0];
+        const coverFile = req.files["cover"]?.[0];
+
         const book = new Book({
             title: req.body.title,
-            pdfUrl: req.file.path,
+            description: req.body.description,
+            pdfUrl: pdfFile.path,
+            coverImage: coverFile ? coverFile.path : "",
             uploadedBy: req.user
         });
 
@@ -20,7 +25,6 @@ const uploadBook = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-
 };
 
 const getAllBooks = async (req, res) => {

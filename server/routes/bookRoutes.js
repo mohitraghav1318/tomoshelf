@@ -15,7 +15,15 @@ router.delete("/:id", authMiddleware, deleteBook);
 // update book by id
 router.put("/:id", authMiddleware, updateBook);
 // Upload a book (PDF)
-router.post("/", authMiddleware, upload.single("pdf"), uploadBook);
+router.post(
+    "/",
+    authMiddleware,
+    upload.fields([
+        { name: "pdf", maxCount: 1 },
+        { name: "cover", maxCount: 1 }
+    ]),
+    uploadBook
+);
 
 
 module.exports = router;

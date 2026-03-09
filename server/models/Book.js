@@ -16,6 +16,11 @@ const bookSchema = new mongoose.Schema({
         required: true
     },
 
+    coverImage: {
+        type: String,
+        default: ""
+    },
+
     uploadedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
