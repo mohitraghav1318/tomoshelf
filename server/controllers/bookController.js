@@ -1,4 +1,5 @@
 const Book = require("../models/Book");
+const Review = require("../models/Review");
 
 // upload book and save to database
 const uploadBook = async (req, res) => {
@@ -27,18 +28,40 @@ const uploadBook = async (req, res) => {
     }
 };
 
+// get all books with uploader info
 const getAllBooks = async (req, res) => {
     try {
 
-        const books = await Book.find().populate("uploadedBy", "name email");
+        const books = await Book.find()
+            .populate("uploadedBy", "name email");
 
-        res.json(books);
+        const booksWithRatings = await Promise.all(
+
+            books.map(async (book) => {
+
+                const reviews = await Review.find({ book: book._id });
+
+                const avgRating =
+                    reviews.length > 0
+                        ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+                        : 0;
+
+                return {
+                    ...book._doc,
+                    avgRating
+                };
+
+            })
+        );
+
+        res.json(booksWithRatings);
 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+// get book by id with uploader info
 const getBookById = async (req, res) => {
     try {
 
@@ -49,13 +72,24 @@ const getBookById = async (req, res) => {
             return res.status(404).json({ message: "Book not found" });
         }
 
-        res.json(book);
+        const reviews = await Review.find({ book: book._id });
+
+        const avgRating =
+            reviews.length > 0
+                ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+                : 0;
+
+        res.json({
+            ...book._doc,
+            avgRating
+        });
 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+// delete book by id (only uploader can delete)
 const deleteBook = async (req, res) => {
     try {
 
@@ -79,6 +113,7 @@ const deleteBook = async (req, res) => {
     }
 };
 
+// update book by id (only uploader can update)
 const updateBook = async (req, res) => {
     try {
 

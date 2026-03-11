@@ -1,4 +1,4 @@
-import "./BookCard.css";
+import { Link } from "react-router-dom";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -8,37 +8,81 @@ const BookCard = ({ book }) => {
         ? `${API_BASE}/${book.coverImage.replace(/\\/g, "/")}`
         : null;
 
-    const pdfUrl = `${API_BASE}/${book.pdfUrl.replace(/\\/g, "/")}`;
+    const avgRating =
+        typeof book.avgRating === "number" && book.avgRating > 0
+            ? book.avgRating.toFixed(1)
+            : null;
 
     return (
-        <div className="book-card">
 
-            {coverUrl && (
-                <img
-                    className="book-cover"
-                    src={coverUrl}
-                    alt={book.title}
-                />
-            )}
+        <Link to={`/book/${book._id}`}>
 
-            <h3 className="book-title">{book.title}</h3>
+            <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer">
 
-            <p className="book-description">{book.description}</p>
+                {/* Cover OR Placeholder */}
 
-            <p className="book-author">
-                Uploaded by: {book.uploadedBy?.name}
-            </p>
+                {coverUrl ? (
 
-            <a
-                className="read-link"
-                href={pdfUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                Read Book
-            </a>
+                    <img
+                        src={coverUrl}
+                        alt={book.title}
+                        className="w-full h-56 object-cover"
+                    />
 
-        </div>
+                ) : (
+
+                    <div className="w-full h-56 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 flex flex-col items-center justify-center text-white p-4 text-center">
+
+                        <h3 className="font-bold text-lg line-clamp-2">
+                            {book.title}
+                        </h3>
+
+                        <p className="text-sm mt-2 opacity-90">
+                            {book.uploadedBy?.name || "Unknown Author"}
+                        </p>
+
+                    </div>
+
+                )}
+
+                {/* Content */}
+
+                <div className="p-4 flex flex-col gap-2">
+
+                    <h3 className="text-lg font-semibold line-clamp-1">
+                        {book.title}
+                    </h3>
+
+                    <p className="text-sm text-gray-600 line-clamp-2">
+                        {book.description}
+                    </p>
+
+                    <p className="text-xs text-gray-500">
+                        Uploaded by: {book.uploadedBy?.name}
+                    </p>
+
+                    {/* Rating */}
+
+                    <div className="flex items-center gap-2 text-sm">
+
+                        {avgRating ? (
+                            <span className="text-yellow-500 font-semibold">
+                                ⭐ {avgRating} / 5
+                            </span>
+                        ) : (
+                            <span className="text-gray-400 text-xs">
+                                No ratings yet
+                            </span>
+                        )}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </Link>
+
     );
 };
 

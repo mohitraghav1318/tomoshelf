@@ -1,14 +1,11 @@
 const express = require("express");
 const router = express.Router();
+
 const authMiddleware = require("../middleware/authMiddleware");
+const { addToLibrary } = require("../controllers/libraryController");
 
-router.get("/protected", authMiddleware, (req, res) => {
 
-    res.json({
-        message: "You accessed a protected route",
-        userId: req.user
-    });
+router.post("/:id", authMiddleware, addToLibrary);
 
-});
 
 module.exports = router;

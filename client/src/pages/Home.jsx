@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import API from "../api/axios";
 import BookCard from "../components/BookCard";
-import "./Home.css";
 
 const Home = () => {
 
@@ -21,18 +20,30 @@ const Home = () => {
     }, []);
 
     return (
-        <div className="home-container">
+        <div className="max-w-7xl mx-auto px-4 py-10">
 
-            <h1 className="home-title">TomoShelf Library</h1>
+            <h1 className="text-3xl font-bold mb-8 text-center">
+                TomoShelf Library
+            </h1>
 
             {books.length === 0 ? (
-                <p>No books uploaded yet.</p>
+                <p className="text-center text-gray-500">
+                    No books uploaded yet.
+                </p>
             ) : (
-                <div className="books-grid">
+
+                <div className="grid gap-6
+                        grid-cols-1
+                        sm:grid-cols-2
+                        md:grid-cols-3
+                        lg:grid-cols-4">
+
                     {books.map((book) => (
                         <BookCard key={book._id} book={book} />
                     ))}
+
                 </div>
+
             )}
 
         </div>

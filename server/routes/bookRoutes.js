@@ -16,7 +16,7 @@ router.delete("/:id", authMiddleware, deleteBook);
 router.put("/:id", authMiddleware, updateBook);
 // Upload a book (PDF)
 router.post(
-    "/",
+    "/uploads",
     authMiddleware,
     upload.fields([
         { name: "pdf", maxCount: 1 },
