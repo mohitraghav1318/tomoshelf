@@ -15,7 +15,7 @@ app.use(
     cors({
         origin: [
             "http://localhost:3000",
-            "https://tomoshelf.vercel.app/"
+            "https://tomoshelf.vercel.app"
         ],
         credentials: true
     })
