@@ -1,13 +1,22 @@
 import "./BookCard.css";
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
+
 const BookCard = ({ book }) => {
+
+    const coverUrl = book.coverImage
+        ? `${API_BASE}/${book.coverImage.replace(/\\/g, "/")}`
+        : null;
+
+    const pdfUrl = `${API_BASE}/${book.pdfUrl.replace(/\\/g, "/")}`;
+
     return (
         <div className="book-card">
 
-            {book.coverImage && (
+            {coverUrl && (
                 <img
                     className="book-cover"
-                    src={`http://localhost:5000/${book.coverImage}`}
+                    src={coverUrl}
                     alt={book.title}
                 />
             )}
@@ -22,7 +31,7 @@ const BookCard = ({ book }) => {
 
             <a
                 className="read-link"
-                href={`http://localhost:5000/${book.pdfUrl}`}
+                href={pdfUrl}
                 target="_blank"
                 rel="noopener noreferrer"
             >
