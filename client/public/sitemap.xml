@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url>
+    <loc>https://tomoshelf.vercel.app/</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://tomoshelf.vercel.app/login</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://tomoshelf.vercel.app/signup</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://tomoshelf.vercel.app/dashboard</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://tomoshelf.vercel.app/upload</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>0.6</priority>
+  </url>
+
+</urlset>
