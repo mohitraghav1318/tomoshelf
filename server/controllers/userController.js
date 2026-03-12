@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Library = require("../models/Library");
+const Book = require("../models/Book");
 
 
 // GET current user
@@ -55,9 +57,50 @@ const deleteUser = async (req, res) => {
 
 };
 
+// GET dashboard stats
+const getDashboardStats = async (req, res) => {
+
+    try {
+
+        const userId = req.user;
+
+        const libraryCount = await Library.countDocuments({
+            user: userId
+        });
+
+        const publishedCount = await Book.countDocuments({
+            uploadedBy: userId
+        });
+
+        const completedCount = await Library.countDocuments({
+            user: userId,
+            status: "completed"
+        });
+
+        const continueCount = await Library.countDocuments({
+            user: userId,
+            status: "continue"
+        });
+
+        res.json({
+            library: libraryCount,
+            published: publishedCount,
+            achievements: completedCount,
+            collections: continueCount
+        });
+
+    } catch (error) {
+
+        res.status(500).json({ message: "Server error" });
+
+    }
+
+};
+
 
 module.exports = {
     getMe,
     updateUser,
-    deleteUser
+    deleteUser,
+    getDashboardStats
 };

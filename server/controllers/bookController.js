@@ -1,5 +1,6 @@
 const Book = require("../models/Book");
 const Review = require("../models/Review");
+const Library = require("../models/Library");
 const cloudinary = require("../config/cloudinary");
 
 
@@ -142,6 +143,7 @@ const getBookById = async (req, res) => {
 
 
 // Delete book
+// Delete book
 const deleteBook = async (req, res) => {
     try {
 
@@ -153,20 +155,27 @@ const deleteBook = async (req, res) => {
             });
         }
 
+        // allow only author
         if (book.uploadedBy.toString() !== req.user) {
             return res.status(403).json({
                 message: "Not allowed to delete this book"
             });
         }
 
-        // delete cover
+        // delete cloudinary files
         await cloudinary.uploader.destroy(book.coverPublicId);
 
-        // delete pdf
         await cloudinary.uploader.destroy(book.pdfPublicId, {
             resource_type: "raw"
         });
 
+        // delete reviews related to this book
+        await Review.deleteMany({ book: book._id });
+
+        // delete library entries
+        await Library.deleteMany({ book: book._id });
+
+        // delete the book
         await book.deleteOne();
 
         res.json({
@@ -174,8 +183,13 @@ const deleteBook = async (req, res) => {
         });
 
     } catch (error) {
+
         console.error(error);
-        res.status(500).json({ message: error.message });
+
+        res.status(500).json({
+            message: error.message
+        });
+
     }
 };
 
@@ -215,12 +229,32 @@ const updateBook = async (req, res) => {
     }
 };
 
+// Get books uploaded by current user
+const getMyBooks = async (req, res) => {
 
+    try {
+
+        const books = await Book.find({
+            uploadedBy: req.user
+        })
+            .sort({ createdAt: -1 });
+
+        res.json(books);
+
+    } catch (error) {
+
+        console.error(error);
+        res.status(500).json({ message: error.message });
+
+    }
+
+};
 
 module.exports = {
     uploadBook,
     getAllBooks,
     getBookById,
     deleteBook,
-    updateBook
+    updateBook,
+    getMyBooks
 };

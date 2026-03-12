@@ -1,17 +1,33 @@
 const mongoose = require("mongoose");
 
-const librarySchema = new mongoose.Schema({
+const librarySchema = new mongoose.Schema(
+    {
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
+        },
 
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        book: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Book",
+            required: true
+        },
+
+        status: {
+            type: String,
+            enum: ["continue", "plan", "completed"],
+            default: "plan"
+        },
+
+        progress: {
+            type: Number,
+            default: 0
+        }
     },
-
-    book: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Book"
+    {
+        timestamps: true
     }
-
-});
+);
 
 module.exports = mongoose.model("Library", librarySchema);

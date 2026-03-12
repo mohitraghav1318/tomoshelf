@@ -1,28 +1,62 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
 import API from "../api/axios";
+import { AuthContext } from "../context/AuthContext";
 
 const BookDetails = () => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { token } = useContext(AuthContext);
 
     const [book, setBook] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [rating, setRating] = useState(5);
     const [comment, setComment] = useState("");
 
+    // get logged in user id from token
+    const getUserIdFromToken = () => {
+
+        if (!token) return null;
+
+        try {
+            const payload = JSON.parse(atob(token.split(".")[1]));
+            return payload.id;
+        } catch {
+            return null;
+        }
+
+    };
+
+    const userId = getUserIdFromToken();
+
     const fetchBook = async () => {
         try {
-
             const res = await API.get(`/books/${id}`);
             setBook(res.data);
-
         } catch (error) {
             console.error(error);
         }
     };
 
+    const handleDelete = async () => {
+
+        const confirm = window.confirm("Delete this book permanently?");
+        if (!confirm) return;
+
+        try {
+
+            await API.delete(`/books/${book._id}`);
+            navigate("/publisher");
+
+        } catch (error) {
+            console.error(error);
+        }
+
+    };
+
     const fetchReviews = async () => {
+
         try {
 
             const res = await API.get(`/reviews/book/${id}`);
@@ -31,6 +65,7 @@ const BookDetails = () => {
         } catch (error) {
             console.error(error);
         }
+
     };
 
     useEffect(() => {
@@ -53,30 +88,39 @@ const BookDetails = () => {
         } catch (error) {
             console.error(error);
         }
+
     };
 
     const addToLibrary = async () => {
 
+        const status = prompt(
+            "Where do you want to save this book?\n\nType:\ncontinue\nplan\ncompleted"
+        );
+
+        if (!status) return;
+
         try {
 
-            await API.post(`/library/${id}`);
+            await API.post(`/library/${id}`, { status });
 
             alert("Book added to your library 📚");
 
         } catch (error) {
             console.error(error);
         }
+
     };
 
     if (!book) {
+
         return (
             <div className="text-center py-20">
                 Loading book...
             </div>
         );
+
     }
 
-    // FIX: Cloudinary already returns full URL
     const coverUrl = book.coverImage || null;
 
     const avgRating = reviews.length
@@ -92,8 +136,7 @@ const BookDetails = () => {
 
             <div className="grid md:grid-cols-2 gap-10">
 
-                {/* Cover OR Placeholder */}
-
+                {/* Cover */}
                 {coverUrl ? (
 
                     <img
@@ -119,7 +162,6 @@ const BookDetails = () => {
                 )}
 
                 {/* Details */}
-
                 <div className="flex flex-col gap-4">
 
                     <h1 className="text-3xl font-bold">
@@ -134,8 +176,19 @@ const BookDetails = () => {
                         Uploaded by: {book.uploadedBy?.name}
                     </p>
 
-                    {/* Rating */}
+                    {/* Only show delete if author */}
+                    {book.uploadedBy?._id === userId && (
 
+                        <button
+                            onClick={handleDelete}
+                            className="bg-red-500 text-white px-4 py-2 rounded mt-4"
+                        >
+                            Delete Book
+                        </button>
+
+                    )}
+
+                    {/* Rating */}
                     <p className="text-yellow-500 font-medium">
                         ⭐ {avgRating}
                     </p>
@@ -162,9 +215,7 @@ const BookDetails = () => {
 
             </div>
 
-
-            {/* Review Section */}
-
+            {/* Reviews */}
             <div className="mt-12">
 
                 <h2 className="text-2xl font-bold mb-6">
@@ -172,7 +223,6 @@ const BookDetails = () => {
                 </h2>
 
                 {/* Add Review */}
-
                 <div className="flex flex-col gap-3 mb-8">
 
                     <select
@@ -203,9 +253,7 @@ const BookDetails = () => {
 
                 </div>
 
-
                 {/* Review List */}
-
                 <div className="flex flex-col gap-6">
 
                     {reviews.length === 0 && (
@@ -244,6 +292,7 @@ const BookDetails = () => {
         </div>
 
     );
+
 };
 
 export default BookDetails;

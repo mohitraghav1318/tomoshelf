@@ -10,6 +10,12 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Upload from "./pages/Upload";
 
+import Library from "./pages/Library";
+import Publisher from "./pages/Publisher";
+import ProfileSettings from "./pages/ProfileSettings";
+import Achievements from "./pages/Achievements";
+import CollectionBooks from "./pages/CollectionBooks";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -22,8 +28,8 @@ function App() {
         toastOptions={{
           style: {
             background: "#1f2937",
-            color: "#fff"
-          }
+            color: "#fff",
+          },
         }}
       />
 
@@ -31,27 +37,21 @@ function App() {
 
       <Routes>
 
-        <Route path="/" element={<Home />} />
+        {/* Public Routes */}
 
+        <Route path="/" element={<Home />} />
         <Route path="/book/:id" element={<BookDetails />} />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected Routes */}
 
         <Route
           path="/read/:id"
           element={
             <ProtectedRoute>
               <Reader />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
             </ProtectedRoute>
           }
         />
@@ -65,8 +65,61 @@ function App() {
           }
         />
 
-      </Routes>
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
 
+        <Route
+          path="/library"
+          element={
+            <ProtectedRoute>
+              <Library />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/library/:collection"
+          element={
+            <ProtectedRoute>
+              <CollectionBooks />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/publisher"
+          element={
+            <ProtectedRoute>
+              <Publisher />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <ProfileSettings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/achievements"
+          element={
+            <ProtectedRoute>
+              <Achievements />
+            </ProtectedRoute>
+          }
+        />
+
+      </Routes>
     </BrowserRouter>
   );
 }

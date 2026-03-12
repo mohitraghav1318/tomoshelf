@@ -4,7 +4,8 @@ const router = express.Router();
 const {
     getMe,
     updateUser,
-    deleteUser
+    deleteUser,
+    getDashboardStats
 } = require("../controllers/userController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -12,6 +13,10 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 // get current user
 router.get("/me", authMiddleware, getMe);
+
+
+// dashboard stats
+router.get("/dashboard", authMiddleware, getDashboardStats);
 
 
 // update profile
