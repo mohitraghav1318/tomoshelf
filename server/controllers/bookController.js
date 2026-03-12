@@ -2,6 +2,7 @@ const Book = require("../models/Book");
 const Review = require("../models/Review");
 const cloudinary = require("../config/cloudinary");
 
+
 // Upload a book
 const uploadBook = async (req, res) => {
     try {
@@ -27,7 +28,9 @@ const uploadBook = async (req, res) => {
             coverImage: coverFile.path,
             coverPublicId: coverFile.filename,
 
-            uploadedBy: req.user
+            uploadedBy: req.user,
+
+            views: 0
         });
 
         await book.save();
@@ -45,16 +48,29 @@ const uploadBook = async (req, res) => {
 
 
 
-// Get all books
+// Get all books (with sorting)
 const getAllBooks = async (req, res) => {
     try {
 
-        const books = await Book.find()
+        const { sort, search } = req.query;
+
+        let sortOption = { createdAt: -1 };
+
+        if (sort === "oldest") sortOption = { createdAt: 1 };
+        if (sort === "views") sortOption = { views: -1 };
+
+        let query = {};
+
+        if (search) {
+            query.title = { $regex: search, $options: "i" };
+        }
+
+        const books = await Book.find(query)
             .populate("uploadedBy", "name email")
+            .sort(sortOption)
             .lean();
 
         const booksWithRatings = await Promise.all(
-
             books.map(async (book) => {
 
                 const reviews = await Review.find({ book: book._id });
@@ -72,9 +88,14 @@ const getAllBooks = async (req, res) => {
             })
         );
 
+        if (sort === "rating") {
+            booksWithRatings.sort((a, b) => b.avgRating - a.avgRating);
+        }
+
         res.json(booksWithRatings);
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -95,6 +116,11 @@ const getBookById = async (req, res) => {
             });
         }
 
+        // increase views
+        await Book.findByIdAndUpdate(req.params.id, {
+            $inc: { views: 1 }
+        });
+
         const reviews = await Review.find({ book: book._id });
 
         const avgRating =
@@ -108,6 +134,7 @@ const getBookById = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -132,10 +159,10 @@ const deleteBook = async (req, res) => {
             });
         }
 
-        // Delete cover image
+        // delete cover
         await cloudinary.uploader.destroy(book.coverPublicId);
 
-        // Delete PDF
+        // delete pdf
         await cloudinary.uploader.destroy(book.pdfPublicId, {
             resource_type: "raw"
         });
@@ -147,6 +174,7 @@ const deleteBook = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -182,9 +210,11 @@ const updateBook = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 module.exports = {

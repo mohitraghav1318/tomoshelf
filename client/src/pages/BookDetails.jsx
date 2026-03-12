@@ -1,9 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import API from "../api/axios";
-import { Link } from "react-router-dom";
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const BookDetails = () => {
 
@@ -79,9 +76,8 @@ const BookDetails = () => {
         );
     }
 
-    const coverUrl = book.coverImage
-        ? `${API_BASE}/${book.coverImage.replace(/\\/g, "/")}`
-        : null;
+    // FIX: Cloudinary already returns full URL
+    const coverUrl = book.coverImage || null;
 
     const avgRating = reviews.length
         ? (
@@ -96,16 +92,34 @@ const BookDetails = () => {
 
             <div className="grid md:grid-cols-2 gap-10">
 
-                {/* Cover */}
-                {coverUrl && (
+                {/* Cover OR Placeholder */}
+
+                {coverUrl ? (
+
                     <img
                         src={coverUrl}
                         alt={book.title}
                         className="w-full rounded-lg shadow-lg"
                     />
+
+                ) : (
+
+                    <div className="w-full h-80 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 flex flex-col items-center justify-center text-white p-6 text-center rounded-lg">
+
+                        <h2 className="text-2xl font-bold">
+                            {book.title}
+                        </h2>
+
+                        <p className="text-sm mt-2 opacity-90">
+                            {book.uploadedBy?.name || "Unknown Author"}
+                        </p>
+
+                    </div>
+
                 )}
 
                 {/* Details */}
+
                 <div className="flex flex-col gap-4">
 
                     <h1 className="text-3xl font-bold">
@@ -121,6 +135,7 @@ const BookDetails = () => {
                     </p>
 
                     {/* Rating */}
+
                     <p className="text-yellow-500 font-medium">
                         ⭐ {avgRating}
                     </p>

@@ -32,6 +32,11 @@ const BookSchema = new mongoose.Schema(
             required: true
         },
 
+        views: {
+            type: Number,
+            default: 0
+        },
+
         uploadedBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",

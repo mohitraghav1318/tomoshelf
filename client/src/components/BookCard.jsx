@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
-
 const BookCard = ({ book }) => {
 
-    const coverUrl = book.coverImage
-        ? `${API_BASE}/${book.coverImage.replace(/\\/g, "/")}`
-        : null;
+    // Cloudinary already gives full URL
+    const coverUrl = book.coverImage || null;
 
     const avgRating =
         typeof book.avgRating === "number" && book.avgRating > 0

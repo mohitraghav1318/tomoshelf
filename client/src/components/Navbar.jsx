@@ -22,12 +22,6 @@ function Navbar() {
                 {/* Desktop Menu */}
                 <div className="hidden md:flex items-center gap-4">
 
-                    <input
-                        type="text"
-                        placeholder="Search books..."
-                        className="px-4 py-2 rounded text-black"
-                    />
-
                     {!token && (
                         <>
                             <Link to="/login">
@@ -75,12 +69,6 @@ function Navbar() {
             {/* Mobile Menu */}
             {open && (
                 <div className="flex flex-col gap-4 mt-4 md:hidden">
-
-                    <input
-                        type="text"
-                        placeholder="Search books..."
-                        className="px-4 py-2 rounded text-black"
-                    />
 
                     {!token && (
                         <>
