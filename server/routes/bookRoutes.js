@@ -15,13 +15,14 @@ router.delete("/:id", authMiddleware, deleteBook);
 // update book by id
 router.put("/:id", authMiddleware, updateBook);
 // Upload a book (PDF)
+// debug middleware / handlers types
+console.log("[bookRoutes] authMiddleware type:", typeof authMiddleware, authMiddleware);
+console.log("[bookRoutes] upload type:", typeof upload, upload);
+console.log("[bookRoutes] uploadBook type:", typeof uploadBook, uploadBook);
 router.post(
     "/uploads",
     authMiddleware,
-    upload.fields([
-        { name: "pdf", maxCount: 1 },
-        { name: "cover", maxCount: 1 }
-    ]),
+    upload,
     uploadBook
 );
 

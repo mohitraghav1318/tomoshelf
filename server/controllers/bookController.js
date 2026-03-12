@@ -1,18 +1,32 @@
 const Book = require("../models/Book");
 const Review = require("../models/Review");
+const cloudinary = require("../config/cloudinary");
 
-// upload book and save to database
+// Upload a book
 const uploadBook = async (req, res) => {
     try {
 
-        const pdfFile = req.files["pdf"]?.[0];
-        const coverFile = req.files["cover"]?.[0];
+        const { title, description } = req.body;
+
+        if (!req.files || !req.files.pdf || !req.files.cover) {
+            return res.status(400).json({
+                message: "PDF and cover image are required"
+            });
+        }
+
+        const pdfFile = req.files.pdf[0];
+        const coverFile = req.files.cover[0];
 
         const book = new Book({
-            title: req.body.title,
-            description: req.body.description,
+            title,
+            description,
+
             pdfUrl: pdfFile.path,
-            coverImage: coverFile ? coverFile.path : "",
+            pdfPublicId: pdfFile.filename,
+
+            coverImage: coverFile.path,
+            coverPublicId: coverFile.filename,
+
             uploadedBy: req.user
         });
 
@@ -24,16 +38,20 @@ const uploadBook = async (req, res) => {
         });
 
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// get all books with uploader info
+
+
+// Get all books
 const getAllBooks = async (req, res) => {
     try {
 
         const books = await Book.find()
-            .populate("uploadedBy", "name email");
+            .populate("uploadedBy", "name email")
+            .lean();
 
         const booksWithRatings = await Promise.all(
 
@@ -47,7 +65,7 @@ const getAllBooks = async (req, res) => {
                         : 0;
 
                 return {
-                    ...book._doc,
+                    ...book,
                     avgRating
                 };
 
@@ -61,15 +79,20 @@ const getAllBooks = async (req, res) => {
     }
 };
 
-// get book by id with uploader info
+
+
+// Get single book
 const getBookById = async (req, res) => {
     try {
 
         const book = await Book.findById(req.params.id)
-            .populate("uploadedBy", "name email");
+            .populate("uploadedBy", "name email")
+            .lean();
 
         if (!book) {
-            return res.status(404).json({ message: "Book not found" });
+            return res.status(404).json({
+                message: "Book not found"
+            });
         }
 
         const reviews = await Review.find({ book: book._id });
@@ -80,7 +103,7 @@ const getBookById = async (req, res) => {
                 : 0;
 
         res.json({
-            ...book._doc,
+            ...book,
             avgRating
         });
 
@@ -89,46 +112,65 @@ const getBookById = async (req, res) => {
     }
 };
 
-// delete book by id (only uploader can delete)
+
+
+// Delete book
 const deleteBook = async (req, res) => {
     try {
 
         const book = await Book.findById(req.params.id);
 
         if (!book) {
-            return res.status(404).json({ message: "Book not found" });
+            return res.status(404).json({
+                message: "Book not found"
+            });
         }
 
-        // Authorization check
         if (book.uploadedBy.toString() !== req.user) {
-            return res.status(403).json({ message: "Not allowed to delete this book" });
+            return res.status(403).json({
+                message: "Not allowed to delete this book"
+            });
         }
+
+        // Delete cover image
+        await cloudinary.uploader.destroy(book.coverPublicId);
+
+        // Delete PDF
+        await cloudinary.uploader.destroy(book.pdfPublicId, {
+            resource_type: "raw"
+        });
 
         await book.deleteOne();
 
-        res.json({ message: "Book deleted successfully" });
+        res.json({
+            message: "Book deleted successfully"
+        });
 
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
-// update book by id (only uploader can update)
+
+
+// Update book
 const updateBook = async (req, res) => {
     try {
 
         const book = await Book.findById(req.params.id);
 
         if (!book) {
-            return res.status(404).json({ message: "Book not found" });
+            return res.status(404).json({
+                message: "Book not found"
+            });
         }
 
-        // Authorization check
         if (book.uploadedBy.toString() !== req.user) {
-            return res.status(403).json({ message: "Not allowed to update this book" });
+            return res.status(403).json({
+                message: "Not allowed to update this book"
+            });
         }
 
-        // Update fields
         book.title = req.body.title || book.title;
         book.description = req.body.description || book.description;
 
@@ -144,4 +186,11 @@ const updateBook = async (req, res) => {
     }
 };
 
-module.exports = { uploadBook, getAllBooks, getBookById, deleteBook, updateBook };
+
+module.exports = {
+    uploadBook,
+    getAllBooks,
+    getBookById,
+    deleteBook,
+    updateBook
+};

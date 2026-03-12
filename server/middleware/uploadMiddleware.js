@@ -1,37 +1,53 @@
 const multer = require("multer");
-const path = require("path");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads/");
-    },
+const storage = new CloudinaryStorage({
+    cloudinary,
 
-    filename: function (req, file, cb) {
-        const uniqueName = Date.now() + "-" + file.originalname;
-        cb(null, uniqueName);
+    params: async (req, file) => {
+
+        let folder = "tomoshelf/books";
+        let resource_type = "auto";
+
+        if (file.fieldname === "cover") {
+            folder = "tomoshelf/covers";
+            resource_type = "image";
+        }
+
+        if (file.fieldname === "pdf") {
+            folder = "tomoshelf/pdfs";
+            resource_type = "raw";   // IMPORTANT
+        }
+
+        return {
+            folder,
+            resource_type,
+            allowed_formats: ["jpg", "jpeg", "png", "pdf"]
+        };
     }
 });
 
 const fileFilter = (req, file, cb) => {
-
-    const allowedTypes = /jpeg|jpg|png|pdf/;
-
-    const extname = allowedTypes.test(
-        path.extname(file.originalname).toLowerCase()
-    );
-
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-        return cb(null, true);
+    if (
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png" ||
+        file.mimetype === "image/jpg" ||
+        file.mimetype === "application/pdf"
+    ) {
+        cb(null, true);
     } else {
-        cb(new Error("Only images and PDFs are allowed"));
+        cb(new Error("Only images and PDFs allowed"), false);
     }
 };
 
 const upload = multer({
-    storage: storage,
-    fileFilter: fileFilter
-});
+    storage,
+    fileFilter,
+    limits: { fileSize: 20 * 1024 * 1024 }
+}).fields([
+    { name: "pdf", maxCount: 1 },
+    { name: "cover", maxCount: 1 }
+]);
 
 module.exports = upload;
