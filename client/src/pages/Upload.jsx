@@ -1,6 +1,7 @@
 import { useState } from "react";
 import API from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Upload = () => {
 
@@ -24,19 +25,16 @@ const Upload = () => {
 
         try {
 
-            await API.post("/books/uploads", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                }
-            });
+            await API.post("/books/uploads", formData);
 
-            alert("Book uploaded successfully");
+            toast.success("Book uploaded successfully");
+
 
             navigate("/");
 
         } catch (error) {
             console.error(error);
-            alert("Upload failed");
+            toast.error("Upload failed");
         }
     };
 

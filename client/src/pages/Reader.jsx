@@ -7,8 +7,6 @@ import pdfWorker from "pdfjs-dist/build/pdf.worker.min?url";
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
-
 const Reader = () => {
 
     const { id } = useParams();
@@ -41,13 +39,22 @@ const Reader = () => {
         return <div className="text-center py-20">Loading book...</div>;
     }
 
-    const pdfUrl = `${API_BASE}/${book.pdfUrl.replace(/\\/g, "/")}`;
+    // FIX: Use Cloudinary URL directly
+    const pdfUrl = book.pdfUrl;
 
     const onDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
     };
 
     const pageWidth = Math.min(window.innerWidth - 40, 800);
+
+    const zoomIn = () => {
+        setScale(prev => Math.min(prev + 0.2, 3));
+    };
+
+    const zoomOut = () => {
+        setScale(prev => Math.max(prev - 0.2, 0.6));
+    };
 
     return (
         <div className="flex flex-col items-center py-10 min-h-screen bg-gray-100">
@@ -61,7 +68,7 @@ const Reader = () => {
             <div className="flex gap-4 mb-6">
 
                 <button
-                    onClick={() => setScale(scale - 0.2)}
+                    onClick={zoomOut}
                     className="bg-gray-700 text-white px-3 py-1 rounded"
                 >
                     -
@@ -72,7 +79,7 @@ const Reader = () => {
                 </span>
 
                 <button
-                    onClick={() => setScale(scale + 0.2)}
+                    onClick={zoomIn}
                     className="bg-gray-700 text-white px-3 py-1 rounded"
                 >
                     +
@@ -80,12 +87,14 @@ const Reader = () => {
 
             </div>
 
-            {/* PDF */}
+            {/* PDF Viewer */}
 
             <Document
                 file={pdfUrl}
                 onLoadSuccess={onDocumentLoadSuccess}
                 options={pdfOptions}
+                loading={<p>Loading PDF...</p>}
+                error={<p>Failed to load PDF.</p>}
             >
                 <Page
                     pageNumber={pageNumber}
@@ -99,7 +108,7 @@ const Reader = () => {
             <div className="flex gap-4 mt-6 items-center">
 
                 <button
-                    onClick={() => setPageNumber(pageNumber - 1)}
+                    onClick={() => setPageNumber(prev => prev - 1)}
                     disabled={pageNumber <= 1}
                     className="bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
                 >
@@ -111,7 +120,7 @@ const Reader = () => {
                 </p>
 
                 <button
-                    onClick={() => setPageNumber(pageNumber + 1)}
+                    onClick={() => setPageNumber(prev => prev + 1)}
                     disabled={pageNumber >= numPages}
                     className="bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
                 >
