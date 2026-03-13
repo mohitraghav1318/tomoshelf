@@ -1,113 +1,105 @@
 # 📚 TomoShelf
 
-TomoShelf is a digital library platform where users can upload and share books in PDF format.
-Readers can browse the library, view book details, and read books uploaded by other users.
+<p align="center">
+  A modern digital library to organize, track, and review books.
+</p>
 
-The project is inspired by platforms like Wattpad but focuses on sharing and reading uploaded PDF books.
+<p align="center">
 
----
+<img src="https://img.shields.io/badge/MERN-Stack-green?style=for-the-badge&logo=mongodb&logoColor=white">
+<img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js&logoColor=white">
+<img src="https://img.shields.io/badge/MongoDB-Database-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white">
+<img src="https://img.shields.io/badge/TailwindCSS-Styling-38B2AC?style=for-the-badge&logo=tailwindcss&logoColor=white">
 
-# 🚀 Current Progress (v1 Development)
+</p>
 
-The first version of TomoShelf focuses on building a **functional full-stack MVP** with the following features:
+<p align="center">
 
-### Backend (Node.js + Express)
+<a href="https://tomoshelf.vercel.app">
+  <img src="https://img.shields.io/badge/🚀 Live Demo-Visit Website-black?style=for-the-badge">
+</a>
 
-* User authentication using **JWT**
-* Secure password hashing using **bcrypt**
-* **Book upload system** using multer
-* Upload **PDF files and cover images**
-* Store book metadata in **MongoDB**
-* Public API to fetch library books
-* Authorization system so users can only modify their own books
-* Static file serving for uploaded PDFs and images
+<a href="https://github.com/mohitraghav1318/tomoshelf">
+  <img src="https://img.shields.io/github/stars/mohitraghav1318/tomoshelf?style=for-the-badge">
+</a>
 
-### Implemented API Routes
+<a href="https://github.com/mohitraghav1318/tomoshelf">
+  <img src="https://img.shields.io/github/forks/mohitraghav1318/tomoshelf?style=for-the-badge">
+</a>
 
-#### Authentication
-
-```
-POST /api/auth/signup
-POST /api/auth/login
-```
-
-#### Books
-
-```
-GET    /api/books        → Get all books in the library
-GET    /api/books/:id    → Get a single book
-POST   /api/books        → Upload a new book
-PUT    /api/books/:id    → Update book details
-DELETE /api/books/:id    → Delete a book (owner only)
-```
-
-#### Static Files
-
-```
-GET /uploads/:filename
-```
-
-Used to serve uploaded PDF files and cover images.
+</p>
 
 ---
 
-# 🖥 Frontend (React + Vite)
+# ✨ About TomoShelf
 
-Frontend development has started with the following progress:
+**TomoShelf** is a full-stack MERN web application designed for readers who want to **organize their books, track reading progress, and share reviews**.
 
-### Implemented
+It provides a clean dashboard where users can manage their personal digital bookshelf and keep track of books they want to read or have completed.
 
-* React project setup using **Vite**
-* Axios API connection to backend
-* **Home / Library page**
-* BookCard component for displaying books
-* Display book title, description, uploader, and cover
-* "Read Book" button that opens the uploaded PDF
-
-### UI Structure
-
-```
-client/src
- ├ api
- │   axios.js
- │
- ├ components
- │   BookCard.jsx
- │   BookCard.css
- │
- ├ pages
- │   Home.jsx
- │   Home.css
- │
- ├ App.jsx
- └ main.jsx
-```
+The goal of TomoShelf is to create a **simple but powerful reading management system** with a modern UI and scalable architecture.
 
 ---
 
-# 📂 Project Structure
+# 🚀 Features
 
-```
-tomoshelf
- ├ client        → React frontend
- └ server        → Express backend
-```
+### 📚 Personal Library
 
-### Backend Structure
+Organize books into structured reading collections:
 
-```
-server
- ├ controllers
- ├ middleware
- ├ models
- ├ routes
- ├ uploads
- └ server.js
-```
+* 📖 Continue Reading
+* 🗓 Plan to Read
+* ✅ Completed
+
+Move books between categories as your reading progresses.
 
 ---
 
-# 🛠 Tech Stack
+### ⭐ Book Reviews & Ratings
+
+Users can:
+
+* Write reviews
+* Rate books
+* Share opinions about their reading experience
+
+---
+
+### 🖼 Book Cover Upload
+
+Upload and manage custom book covers using **Cloudinary cloud storage**.
+
+---
+
+### 🔐 Authentication System
+
+Secure authentication with:
+
+* User login & signup
+* Token-based authentication
+* Protected routes
+
+---
+
+### 📊 Dashboard Overview
+
+A centralized dashboard where users can:
+
+* Access their collections
+* Navigate their library
+* Manage books easily
+
+---
+
+# 🧰 Tech Stack
+
+### Frontend
+
+* React
+* React Router
+* Axios
+* TailwindCSS
 
 ### Backend
 
@@ -115,43 +107,157 @@ server
 * Express.js
 * MongoDB
 * Mongoose
-* Multer
-* JWT Authentication
-* Bcrypt
 
-### Frontend
+### Cloud Services
 
-* React
-* Vite
-* Axios
+* Cloudinary (Image Hosting)
 
----
+### Deployment
 
-# 🔜 Planned Features (Upcoming)
-
-For future versions of TomoShelf:
-
-* Book detail page
-* Upload books from the frontend UI
-* Login / Signup UI
-* Navigation bar
-* Categories and subcategories
-* Pagination for large libraries
-* Book search
-* User profiles
-* Comments and ratings
-* Chapter-based publishing (long-term goal)
+* Vercel (Frontend)
+* Node Server Hosting (Backend)
 
 ---
 
-# 🎯 Goal
+# 📂 Project Structure
 
-The goal of TomoShelf is to create an open digital platform where users can **share and read books freely**, similar to community publishing platforms.
-
-Version 1 focuses on delivering a working **MVP digital library** that allows users to upload and read books.
+```
+TomoShelf
+│
+├── client
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── context
+│   │   ├── api
+│   │   └── App.jsx
+│   │
+│   └── vite.config.js
+│
+├── server
+│   ├── controllers
+│   ├── models
+│   ├── routes
+│   ├── middleware
+│   ├── config
+│   └── server.js
+│
+└── README.md
+```
 
 ---
 
-# 📅 Current Development Status
+# ⚙️ Installation
 
-TomoShelf **v1 is currently under development** with the goal of deploying the first working version soon.
+Clone the repository
+
+```
+git clone https://github.com/mohitraghav1318/tomoshelf.git
+```
+
+Move into the project directory
+
+```
+cd tomoshelf
+```
+
+---
+
+# 🖥 Backend Setup
+
+```
+cd server
+npm install
+```
+
+Create a `.env` file
+
+```
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+Run the backend server
+
+```
+npm run dev
+```
+
+---
+
+# 🌐 Frontend Setup
+
+```
+cd client
+npm install
+npm run dev
+```
+
+---
+
+# 🔑 Environment Variables
+
+### Server `.env`
+
+```
+PORT=
+MONGO_URI=
+JWT_SECRET=
+
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+```
+
+### Client `.env`
+
+```
+VITE_API_BASE_URL=http://localhost:5000/api
+```
+
+---
+
+# 🛣 Future Improvements
+
+Planned improvements for TomoShelf:
+
+* 📊 Reading analytics dashboard
+* 🔎 Book search & discovery
+* 🧠 Smart recommendations
+* 👥 Community reviews
+* 📱 Improved mobile responsiveness
+* 🔔 Reading reminders
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+Steps:
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Submit a Pull Request
+
+---
+
+# 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+# 👨‍💻 Author
+
+**Mohit Raghav aka Mr Zero**
+
+Engineering student passionate about building full-stack applications and experimenting with modern web technologies.
+
+If you like this project, consider ⭐ **starring the repository**.
