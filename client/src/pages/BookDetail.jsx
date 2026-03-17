@@ -1,20 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {
-  ArrowLeft,
-  BookOpen,
-  Star,
-  Calendar,
-  FileText,
-  Globe,
-} from 'lucide-react';
+import { ArrowLeft, BookOpen, Star, Calendar, FileText, Globe, Check, Plus } from 'lucide-react';
 import { getBookById } from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import { checkBookInShelf, addBookToShelf, removeBookFromShelf } from '../services/shelfService';
 
 const BookDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { token, isAuthenticated } = useAuth();
+
   const [book, setBook] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [inShelf, setInShelf] = useState(false);
+  const [shelfEntry, setShelfEntry] = useState(null);
+  const [addingToShelf, setAddingToShelf] = useState(false);
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -31,6 +31,64 @@ const BookDetail = () => {
     fetchBook();
   }, [id]);
 
+  useEffect(() => {
+    if (isAuthenticated && token) {
+      checkShelf();
+    }
+  }, [id, isAuthenticated, token]);
+
+  const checkShelf = async () => {
+    try {
+      const data = await checkBookInShelf(token, id);
+      setInShelf(data.inShelf);
+      setShelfEntry(data.entry);
+    } catch (error) {
+      console.error('Failed to check shelf:', error);
+    }
+  };
+
+  const handleAddToShelf = async () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+
+    setAddingToShelf(true);
+    try {
+      const bookData = {
+        title: book.title,
+        authors: book.authors,
+        thumbnail: book.thumbnail,
+        publishedDate: book.publishedDate,
+        pageCount: book.pageCount,
+        categories: book.categories,
+        description: book.description,
+      };
+
+      const entry = await addBookToShelf(token, id, bookData, 'want-to-read');
+      setInShelf(true);
+      setShelfEntry(entry);
+    } catch (error) {
+      console.error('Failed to add to shelf:', error);
+      alert(error.message);
+    } finally {
+      setAddingToShelf(false);
+    }
+  };
+
+  const handleRemoveFromShelf = async () => {
+    if (!confirm('Remove this book from your shelf?')) return;
+
+    try {
+      await removeBookFromShelf(token, shelfEntry._id);
+      setInShelf(false);
+      setShelfEntry(null);
+    } catch (error) {
+      console.error('Failed to remove from shelf:', error);
+      alert(error.message);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -44,10 +102,7 @@ const BookDetail = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-4">Book not found</h2>
-          <button
-            onClick={() => navigate('/')}
-            className="text-purple-500 hover:text-purple-400"
-          >
+          <button onClick={() => navigate('/')} className="text-purple-500 hover:text-purple-400">
             Go back home
           </button>
         </div>
@@ -58,6 +113,7 @@ const BookDetail = () => {
   return (
     <div className="min-h-screen pt-20 px-4 pb-12">
       <div className="max-w-6xl mx-auto">
+
         {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
@@ -68,15 +124,15 @@ const BookDetail = () => {
         </button>
 
         <div className="grid md:grid-cols-[300px_1fr] gap-8">
-          {/* Book Cover */}
+
+          {/* Left Column: Cover + Action Buttons */}
           <div className="flex flex-col items-center md:items-start">
+
+            {/* Book Cover */}
             <div className="w-full max-w-[300px] aspect-[2/3] bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-xl">
               {book.largeThumbnail || book.thumbnail ? (
                 <img
-                  src={(book.largeThumbnail || book.thumbnail).replace(
-                    'http://',
-                    'https://',
-                  )}
+                  src={(book.largeThumbnail || book.thumbnail).replace('http://', 'https://')}
                   alt={book.title}
                   className="w-full h-full object-cover"
                 />
@@ -89,9 +145,33 @@ const BookDetail = () => {
 
             {/* Action Buttons */}
             <div className="w-full max-w-[300px] mt-6 space-y-3">
-              <button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold transition-colors">
-                Add to Shelf
-              </button>
+              {inShelf ? (
+                <>
+                  <button
+                    onClick={() => navigate('/shelf')}
+                    className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                  >
+                    <Check className="w-5 h-5" />
+                    In Your Shelf
+                  </button>
+                  <button
+                    onClick={handleRemoveFromShelf}
+                    className="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold transition-colors"
+                  >
+                    Remove from Shelf
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleAddToShelf}
+                  disabled={addingToShelf}
+                  className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                >
+                  <Plus className="w-5 h-5" />
+                  {addingToShelf ? 'Adding...' : 'Add to Shelf'}
+                </button>
+              )}
+
               {book.previewLink && (
                 <a
                   href={book.previewLink}
@@ -105,7 +185,7 @@ const BookDetail = () => {
             </div>
           </div>
 
-          {/* Book Info */}
+          {/* Right Column: Book Info */}
           <div className="text-white">
             <h1 className="text-4xl font-bold mb-2">{book.title}</h1>
             <p className="text-xl text-gray-400 mb-4">
@@ -117,14 +197,10 @@ const BookDetail = () => {
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex items-center gap-1 text-yellow-500">
                   <Star className="w-5 h-5 fill-current" />
-                  <span className="text-lg font-semibold">
-                    {book.averageRating.toFixed(1)}
-                  </span>
+                  <span className="text-lg font-semibold">{book.averageRating.toFixed(1)}</span>
                 </div>
                 {book.ratingsCount && (
-                  <span className="text-gray-500">
-                    ({book.ratingsCount} ratings)
-                  </span>
+                  <span className="text-gray-500">({book.ratingsCount} ratings)</span>
                 )}
               </div>
             )}
@@ -140,7 +216,6 @@ const BookDetail = () => {
                   </div>
                 </div>
               )}
-
               {book.pageCount && (
                 <div className="flex items-center gap-2 text-gray-400">
                   <FileText className="w-5 h-5" />
@@ -150,7 +225,6 @@ const BookDetail = () => {
                   </div>
                 </div>
               )}
-
               {book.publisher && (
                 <div className="flex items-center gap-2 text-gray-400">
                   <BookOpen className="w-5 h-5" />
@@ -160,7 +234,6 @@ const BookDetail = () => {
                   </div>
                 </div>
               )}
-
               {book.language && (
                 <div className="flex items-center gap-2 text-gray-400">
                   <Globe className="w-5 h-5" />
@@ -175,9 +248,7 @@ const BookDetail = () => {
             {/* Categories */}
             {book.categories && book.categories.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-400 mb-2">
-                  GENRES
-                </h3>
+                <h3 className="text-sm font-semibold text-gray-400 mb-2">GENRES</h3>
                 <div className="flex flex-wrap gap-2">
                   {book.categories.map((category, index) => (
                     <span
@@ -200,6 +271,7 @@ const BookDetail = () => {
               />
             </div>
           </div>
+
         </div>
       </div>
     </div>
