@@ -246,10 +246,7 @@ node index.js
 
 ## 📸 Screenshots
 
-> Coming soon — add your own by taking a screenshot at 1200×630px
-> and saving it as `client/public/og-image.png`
-
----
+> Coming soon 
 
 ## 🤝 Contributing
 
