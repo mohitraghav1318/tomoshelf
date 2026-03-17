@@ -10,6 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+
+// Health check — used by frontend to detect cold start
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 const booksRoutes = require('./routes/books');
 const authRoutes = require('./routes/auth');
 const shelfRoutes = require('./routes/shelf');
@@ -28,7 +34,7 @@ const startServer = async () => {
   try {
     // Connect to MongoDB
     await connectDB();
-    
+
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

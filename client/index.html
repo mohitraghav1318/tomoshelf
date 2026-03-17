@@ -1,13 +1,80 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── Primary Meta ───────────────────────────────────────────── -->
+  <title>TomoShelf — Your Personal Reading Shelf</title>
+  <meta name="description"
+    content="TomoShelf helps you track every book you read, discover what to read next, and build a shelf that's truly yours. Search, rate, and organize your reading journey." />
+  <meta name="keywords"
+    content="book tracker, reading list, personal shelf, book recommendations, reading progress, book ratings" />
+  <meta name="author" content="Mohit Raghav — MIET" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://tomoshelf.vercel.app/" />
+
+  <!-- ── Favicon ────────────────────────────────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <!-- Fallback for older browsers that don't support SVG favicons -->
+  <link rel="alternate icon" href="/favicon.svg" />
+  <meta name="theme-color" content="#7c3aed" />
+
+  <!-- ── Open Graph (WhatsApp, Facebook, LinkedIn previews) ─────── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://tomoshelf.vercel.app/" />
+  <meta property="og:site_name" content="TomoShelf" />
+  <meta property="og:title" content="TomoShelf — Your Personal Reading Shelf" />
+  <meta property="og:description"
+    content="Track every book you read, discover what to read next, and build a shelf that's truly yours." />
+  <meta property="og:image" content="https://tomoshelf.vercel.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- ── Twitter Card (X previews) ──────────────────────────────── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://tomoshelf.vercel.app/" />
+  <meta name="twitter:title" content="TomoShelf — Your Personal Reading Shelf" />
+  <meta name="twitter:description"
+    content="Track every book you read, discover what to read next, and build a shelf that's truly yours." />
+  <meta name="twitter:image" content="https://tomoshelf.vercel.app/og-image.png" />
+
+  <!-- ── Mobile / PWA hints ─────────────────────────────────────── -->
+  <!-- Tells iOS Safari to use the purple theme in the status bar -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="TomoShelf" />
+
+  <!-- ── Structured Data (Google rich results) ──────────────────── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TomoShelf",
+    "url": "https://tomoshelf.vercel.app/",
+    "description": "TomoShelf helps you track every book you read, discover what to read next, and build a shelf that is truly yours.",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "Web",
+    "author": {
+      "@type": "Person",
+      "name": "Mohit Raghav",
+      "affiliation": "MIET"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    }
+  }
+  </script>
+
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
 </html>
