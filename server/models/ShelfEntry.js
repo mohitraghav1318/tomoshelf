@@ -38,6 +38,13 @@ const shelfEntrySchema = new mongoose.Schema({
     },
     completedAt: {
         type: Date
+    },
+    // After completedAt field, before the closing })
+    rating: {
+        type: Number,
+        min: 0,
+        max: 5,
+        default: 0   // 0 means "not rated yet"
     }
 });
 

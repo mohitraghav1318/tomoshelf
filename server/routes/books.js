@@ -68,6 +68,18 @@ router.get('/:id', async (req, res) => {
       language: item.volumeInfo.language,
       previewLink: item.volumeInfo.previewLink,
       infoLink: item.volumeInfo.infoLink,
+      previewLink: item.volumeInfo.previewLink,
+      infoLink: item.volumeInfo.infoLink,
+
+      // Buy links — from saleInfo block
+      buyLink: item.saleInfo?.buyLink || null,
+      saleability: item.saleInfo?.saleability || null,
+      // e.g. "FOR_SALE", "FREE", "NOT_FOR_SALE", "BY_GOOGLE"
+
+      // Series — Google Books has no series field,
+      // but many books put it in subtitle e.g. "Book 1 of Harry Potter"
+      // or inside the title itself. We extract it best-effort.
+      subtitle: item.volumeInfo.subtitle || null,
     };
 
     res.json({ book });

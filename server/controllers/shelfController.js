@@ -60,7 +60,7 @@ exports.addToShelf = async (req, res) => {
 exports.updateShelfEntry = async (req, res) => {
     try {
         const { id } = req.params;
-        const { status, currentPage } = req.body;
+        const { status, currentPage, rating } = req.body;
 
         const entry = await ShelfEntry.findOne({
             _id: id,
@@ -84,6 +84,10 @@ exports.updateShelfEntry = async (req, res) => {
 
         if (currentPage !== undefined) {
             entry.currentPage = currentPage;
+        }
+
+        if (rating !== undefined) {
+            entry.rating = rating;
         }
 
         await entry.save();

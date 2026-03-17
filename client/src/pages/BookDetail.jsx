@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, Star, Calendar, FileText, Globe, Check, Plus } from 'lucide-react';
+import {
+  ArrowLeft, BookOpen, Star, Calendar, FileText,
+  Globe, Check, Plus, ShoppingCart, ExternalLink, BookMarked
+} from 'lucide-react';
 import { getBookById } from '../services/api';
 import { useAuth } from '../context/AuthContext';
-import { checkBookInShelf, addBookToShelf, removeBookFromShelf } from '../services/shelfService';
+import { checkBookInShelf, addBookToShelf, removeBookFromShelf, updateShelfEntry } from '../services/shelfService';
+import StarRating from '../components/StarRating';
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -27,14 +31,11 @@ const BookDetail = () => {
         setLoading(false);
       }
     };
-
     fetchBook();
   }, [id]);
 
   useEffect(() => {
-    if (isAuthenticated && token) {
-      checkShelf();
-    }
+    if (isAuthenticated && token) checkShelf();
   }, [id, isAuthenticated, token]);
 
   const checkShelf = async () => {
@@ -47,12 +48,17 @@ const BookDetail = () => {
     }
   };
 
-  const handleAddToShelf = async () => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
+  const handleRating = async (newRating) => {
+    try {
+      await updateShelfEntry(token, shelfEntry._id, { rating: newRating });
+      setShelfEntry(prev => ({ ...prev, rating: newRating }));
+    } catch (error) {
+      console.error('Failed to rate book:', error);
     }
+  };
 
+  const handleAddToShelf = async () => {
+    if (!isAuthenticated) { navigate('/login'); return; }
     setAddingToShelf(true);
     try {
       const bookData = {
@@ -64,7 +70,6 @@ const BookDetail = () => {
         categories: book.categories,
         description: book.description,
       };
-
       const entry = await addBookToShelf(token, id, bookData, 'want-to-read');
       setInShelf(true);
       setShelfEntry(entry);
@@ -78,7 +83,6 @@ const BookDetail = () => {
 
   const handleRemoveFromShelf = async () => {
     if (!confirm('Remove this book from your shelf?')) return;
-
     try {
       await removeBookFromShelf(token, shelfEntry._id);
       setInShelf(false);
@@ -89,10 +93,26 @@ const BookDetail = () => {
     }
   };
 
+  // Series detection — Google Books has no series field.
+  // We parse common patterns from subtitle and title:
+  //   "(The Stormlight Archive, #1)"   → "The Stormlight Archive"
+  //   "Book 1 of the Mistborn series"  → "Mistborn series"
+  //   subtitle: "The X Series"         → "X"
+  const detectSeries = (title, subtitle) => {
+    const sources = [subtitle, title].filter(Boolean).join(' ');
+    const parenMatch = sources.match(/\(([^)]+),?\s*#\d+\)/);
+    if (parenMatch) return parenMatch[1].trim();
+    const ofMatch = sources.match(/book\s+\d+\s+(?:of|in)\s+(?:the\s+)?(.+)/i);
+    if (ofMatch) return ofMatch[1].replace(/[,.].*/, '').trim();
+    const seriesMatch = sources.match(/the\s+(.+?)\s+series/i);
+    if (seriesMatch) return seriesMatch[1].trim();
+    return null;
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500" />
       </div>
     );
   }
@@ -110,11 +130,12 @@ const BookDetail = () => {
     );
   }
 
+  const seriesName = detectSeries(book.title, book.subtitle);
+
   return (
     <div className="min-h-screen pt-20 px-4 pb-12">
       <div className="max-w-6xl mx-auto">
 
-        {/* Back Button */}
         <button
           onClick={() => navigate(-1)}
           className="flex items-center gap-2 text-gray-400 hover:text-white mb-8 transition-colors"
@@ -125,10 +146,9 @@ const BookDetail = () => {
 
         <div className="grid md:grid-cols-[300px_1fr] gap-8">
 
-          {/* Left Column: Cover + Action Buttons */}
+          {/* Left Column */}
           <div className="flex flex-col items-center md:items-start">
 
-            {/* Book Cover */}
             <div className="w-full max-w-[300px] aspect-[2/3] bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-xl">
               {book.largeThumbnail || book.thumbnail ? (
                 <img
@@ -143,8 +163,8 @@ const BookDetail = () => {
               )}
             </div>
 
-            {/* Action Buttons */}
             <div className="w-full max-w-[300px] mt-6 space-y-3">
+
               {inShelf ? (
                 <>
                   <button
@@ -160,6 +180,14 @@ const BookDetail = () => {
                   >
                     Remove from Shelf
                   </button>
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-400 mb-2">Your rating</p>
+                    <StarRating
+                      rating={shelfEntry?.rating || 0}
+                      onChange={handleRating}
+                      size="lg"
+                    />
+                  </div>
                 </>
               ) : (
                 <button
@@ -172,27 +200,79 @@ const BookDetail = () => {
                 </button>
               )}
 
-              {book.previewLink && (
+              {/* Buy on Google Play — only when Google actually sells this book */}
+              {book.buyLink && book.saleability === 'FOR_SALE' && (
                 <a
-                  href={book.previewLink}
+                  href={book.buyLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-semibold text-center transition-colors"
+                  className="flex items-center justify-center gap-2 w-full bg-amber-600 hover:bg-amber-500 text-white py-3 rounded-lg font-semibold transition-colors"
                 >
-                  Preview Book
+                  <ShoppingCart className="w-4 h-4" />
+                  Buy on Google Play
                 </a>
               )}
+
+              {/* Find this book — plain search URLs, no API key needed */}
+              <div className="pt-1">
+                <p className="text-xs text-gray-500 mb-2 uppercase tracking-wide">
+                  Find this book
+                </p>
+                <div className="flex flex-col gap-2">
+                  <a
+                    href={`https://www.amazon.com/s?k=${encodeURIComponent(
+                      book.title + ' ' + (book.authors?.[0] || '')
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-sm transition-colors"
+                  >
+                    <ShoppingCart className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                    Search on Amazon
+                  </a>
+                  <a
+                    href={`https://www.goodreads.com/search?q=${encodeURIComponent(book.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-sm transition-colors"
+                  >
+                    <BookMarked className="w-4 h-4 text-green-400 flex-shrink-0" />
+                    View on Goodreads
+                  </a>
+                  <a
+                    href={`https://www.worldcat.org/search?q=${encodeURIComponent(book.title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-sm transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                    Find in a library
+                  </a>
+                </div>
+              </div>
+
             </div>
           </div>
 
-          {/* Right Column: Book Info */}
+          {/* Right Column */}
           <div className="text-white">
+
             <h1 className="text-4xl font-bold mb-2">{book.title}</h1>
+
+            {/* Series badge — only renders when a series is detected */}
+            {seriesName && (
+              <div className="flex items-center gap-2 mb-3">
+                <BookMarked className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                <span className="text-sm text-purple-400 font-medium">
+                  {seriesName}
+                </span>
+              </div>
+            )}
+
             <p className="text-xl text-gray-400 mb-4">
               by {book.authors.join(', ')}
             </p>
 
-            {/* Rating */}
             {book.averageRating && (
               <div className="flex items-center gap-2 mb-6">
                 <div className="flex items-center gap-1 text-yellow-500">
@@ -200,12 +280,13 @@ const BookDetail = () => {
                   <span className="text-lg font-semibold">{book.averageRating.toFixed(1)}</span>
                 </div>
                 {book.ratingsCount && (
-                  <span className="text-gray-500">({book.ratingsCount} ratings)</span>
+                  <span className="text-gray-500">
+                    ({book.ratingsCount.toLocaleString()} ratings)
+                  </span>
                 )}
               </div>
             )}
 
-            {/* Metadata Grid */}
             <div className="grid grid-cols-2 gap-4 mb-8">
               {book.publishedDate && (
                 <div className="flex items-center gap-2 text-gray-400">
@@ -245,16 +326,12 @@ const BookDetail = () => {
               )}
             </div>
 
-            {/* Categories */}
             {book.categories && book.categories.length > 0 && (
               <div className="mb-6">
                 <h3 className="text-sm font-semibold text-gray-400 mb-2">GENRES</h3>
                 <div className="flex flex-wrap gap-2">
                   {book.categories.map((category, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 bg-gray-800 text-purple-400 rounded-full text-sm"
-                    >
+                    <span key={index} className="px-3 py-1 bg-gray-800 text-purple-400 rounded-full text-sm">
                       {category}
                     </span>
                   ))}
@@ -262,7 +339,6 @@ const BookDetail = () => {
               </div>
             )}
 
-            {/* Description */}
             <div>
               <h3 className="text-xl font-semibold mb-3">About this book</h3>
               <div
@@ -270,8 +346,8 @@ const BookDetail = () => {
                 dangerouslySetInnerHTML={{ __html: book.description }}
               />
             </div>
-          </div>
 
+          </div>
         </div>
       </div>
     </div>

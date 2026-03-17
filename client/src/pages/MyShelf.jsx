@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { getShelf, removeBookFromShelf, updateShelfEntry } from '../services/shelfService';
 import { BookOpen, Trash2, Edit } from 'lucide-react';
 import ProgressModal from '../components/ProgressModal';
+import StarRating from '../components/StarRating';
 
 const MyShelf = () => {
     const [shelf, setShelf] = useState([]);
@@ -72,6 +73,17 @@ const MyShelf = () => {
         } catch (error) {
             console.error('Failed to update progress:', error);
             throw error;
+        }
+    };
+
+    const handleRating = async (entryId, rating) => {
+        try {
+            // updateShelfEntry already exists in your shelfService!
+            // just pass { rating } as the update object
+            await updateShelfEntry(token, entryId, { rating });
+            fetchShelf(); // re-fetch so the new rating saves to state
+        } catch (error) {
+            console.error('Failed to update rating:', error);
         }
     };
 
@@ -153,8 +165,8 @@ const MyShelf = () => {
                             key={tab.key}
                             onClick={() => setFilter(tab.key)}
                             className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${filter === tab.key
-                                    ? 'bg-purple-600 text-white'
-                                    : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                                ? 'bg-purple-600 text-white'
+                                : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
                                 }`}
                         >
                             {tab.label}
@@ -214,6 +226,13 @@ const MyShelf = () => {
                                         <p className="text-gray-400 text-xs mb-3">
                                             {entry.bookData.authors?.join(', ')}
                                         </p>
+
+                                        {/* ADD THIS — star rating below author name */}
+                                        <StarRating
+                                            rating={entry.rating || 0}
+                                            onChange={(newRating) => handleRating(entry._id, newRating)}
+                                            size="sm"
+                                        />
 
                                         {/* Status Dropdown */}
                                         <select
