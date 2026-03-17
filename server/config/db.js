@@ -10,6 +10,4 @@ const connectDB = async () => {
     }
 };
 
-console.log("working");
-
 module.exports = connectDB;

@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/shelf';
+const API_URL = import.meta.env.VITE_API_URL_SHELF;
 
 // Get user's shelf (with optional status filter)
 export const getShelf = async (token, status = null) => {

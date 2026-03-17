@@ -152,11 +152,10 @@ const MyShelf = () => {
                         <button
                             key={tab.key}
                             onClick={() => setFilter(tab.key)}
-                            className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                                filter === tab.key
+                            className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${filter === tab.key
                                     ? 'bg-purple-600 text-white'
                                     : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-                            }`}
+                                }`}
                         >
                             {tab.label}
                         </button>
