@@ -6,7 +6,8 @@ TomoShelf is a full-stack personalized book tracking and discovery platform. It 
 ## 2. Tech Stack Detail
 ### Frontend
 - **React (Vite 6.0)**: Modern React framework for high-performance builds.
-- **Tailwind CSS (3.4)**: Utility-first CSS for premium, responsive design.
+- **Tailwind CSS (3.4)**: Utility-first CSS for clean, responsive design.
+- **Montserrat**: Global font for a clean and modern aesthetic.
 - **Lucide React**: Clean, consistent icon set.
 - **React Router Dom (7.13)**: Client-side routing for seamless navigation.
 
@@ -47,50 +48,64 @@ TomoShelf is a full-stack personalized book tracking and discovery platform. It 
     - `authService.js`: API wrappers for login/signup.
     - `shelfService.js`: API wrappers for CRUD shelf actions.
 - `components/`:
-    - `Navbar`: Responsive navigation with auth-aware links and premium logo.
-    - `SearchBar`: Debounced or form-based search input.
-    - `BookCard`: Individual book display with cover art and basic info.
+    - `Navbar`: Responsive navigation with Montserrat typography and clean UI.
+    - `SearchBar`: Debounced search input for book discovery.
+    - `SimpleBookCard`: Clean, minimalist book display.
     - `BackendWakeup`: Silently pings the server to reduce cold-start latency.
+    - `Footer`: Clean site footer with links to all resources.
 
 ---
 
 ## 4. API Documentation (Endpoints)
 ### Authentication (`/api/auth`)
-- `POST /signup`: payload `{username, email, password}` -> Returns `{user, token}`.
-- `POST /login`: payload `{email, password}` -> Returns `{user, token}`.
+- `POST /signup`: `{username, email, password}` -> `{user, token}`.
+- `POST /login`: `{email, password}` -> `{user, token}`.
 - `GET /me`: Returns current user info (requires Bearer token).
 
 ### Books (`/api/books`)
-- `GET /search?query=...`: Proxies Google Books API, returns sanitized items.
-- `GET /:id`: Fetches detailed metadata for a specific Google Book ID.
+- `GET /search?query=...`: Google Books API proxy.
+- `GET /:id`: Detailed book metadata.
 
 ### Shelf (`/api/shelf`)
-- `GET /`: Retrieves user's shelf (supports `?status=...` filtering).
-- `POST /`: Adds a book to the shelf. Required: `bookId`, `bookData`, `status`.
-- `PUT /:id`: Updates status (e.g., 'completed'), `currentPage`, or `rating`.
-- `DELETE /:id`: Removes a book entry from the database.
-- `GET /check/:bookId`: Quickly verifies if a book is already tracked by the user.
+- `GET /`: Retrieves user's shelf (supports status filtering).
+- `POST /`: Adds a book to the shelf.
+- `PUT /:id`: Updates status, progress, or rating.
+- `DELETE /:id`: Removes a book entry.
 
 ---
 
 ## 5. Core System Logic
 ### Authentication Middleware
-The `protect` middleware extracts the token from the `Authorization` header (`Bearer <token>`). It uses `jwt.verify` with `JWT_SECRET`. On success, it attaches the `user.id` to the request object (`req.user`), allowing downstream controllers to identify the user.
+The `protect` middleware verifies JWT tokens in the `Authorization` header, identifying users for secure data access.
 
 ### Recommendation Engine Logic
-Implemented in `services/api.js`, the engine follows these steps:
-1. **Genre Analysis**: Scans all 'completed' books in the user's shelf.
-2. **Top Genre Selection**: Counts category occurrences and picks the most frequent.
-3. **External Fetch**: Queries Google Books using the Top Genre as a search term.
-4. **Refined Filtering**: Strips out any books that already exist in the user's total shelf (read or unread).
-5. **Display**: Returns the top matching results to the `Home` page.
-
-### Environment Configuration
-- `MONGODB_URI`: Connection string for the database.
-- `JWT_SECRET`: Secret key for signing and verifying tokens.
-- `GOOGLE_BOOKS_API_KEY`: API key for Google Books Volume services.
-- `VITE_API_URL`: Base URL for the backend API from the client side.
+1. **Genre Analysis**: Scans 'completed' books in the user shelf.
+2. **Top Genre Selection**: Identifies the most frequent category.
+3. **External Fetch**: Queries Google Books using the Top Genre.
+4. **Refined Filtering**: Excludes books already in the user's shelf.
 
 ---
-Report Last Updated: 2026-03-18
-Generation: Antigravity AI
+
+## 6. UI & Design Philosophy
+### Minimalist Aesthetics
+- **Montserrat Typography**: Primary font used globally for a modern, clean look.
+- **Solid Colors**: Replaced complex gradients and glassmorphism with solid color palettes (Slate, Blue).
+- **Clean Components**: Simplified `Navbar`, `Home`, and `Settings` for better readability and performance.
+- **Responsive Layouts**: Fully responsive experience across all device sizes.
+
+---
+
+## 7. Global Routing
+All links in the `Navbar` and `Footer` are fully functional:
+- `/`: Home / Discovery
+- `/browse`: Book Exploration
+- `/shelf`: Personal Reading Tracker
+- `/settings`: Account Preferences
+- `/docs`: Documentation Hub
+- `/api-guide`: API Reference
+- `/privacy`: Privacy Policy
+
+---
+Report Last Updated: 2026-03-18 (V3.0)
+Author: Antigravity AI
+Project: TomoShelf

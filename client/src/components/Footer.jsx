@@ -1,82 +1,63 @@
 import { Link } from 'react-router-dom';
-import { Github, Twitter, Linkedin, Mail, Heart, ExternalLink } from 'lucide-react';
+import { Github, Twitter, Linkedin, Heart } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-auto pt-20 pb-10 px-6 overflow-hidden">
-      {/* Decorative background blur */}
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-purple-600/5 blur-[120px] rounded-full -z-10" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/5 blur-[120px] rounded-full -z-10" />
-
+    <footer className="bg-slate-950 border-t border-slate-900 pt-16 pb-8 px-6 font-sans">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          {/* Brand Column */}
-          <div className="space-y-6">
-            <Link to="/" className="text-2xl font-black text-white tracking-tighter">
-              Tomo<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-400">Shelf</span>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+          {/* Brand */}
+          <div className="space-y-4">
+            <Link to="/" className="text-xl font-black text-white tracking-tight">
+              Tomo<span className="text-blue-500">Shelf</span>
             </Link>
-            <p className="text-gray-400 text-sm leading-relaxed max-w-xs">
-              Elevate your reading journey. Track your collection, discover new worlds, and organize your literary universe with style.
+            <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
+              Your personal library, simplified. Track your collection and discover new worlds.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-all">
-                <Github size={18} />
-              </a>
-              <a href="#" className="p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-all">
-                <Twitter size={18} />
-              </a>
-              <a href="#" className="p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-white/10 transition-all">
-                <Linkedin size={18} />
-              </a>
+              <a href="#" className="text-slate-500 hover:text-white transition-all"><Github size={18} /></a>
+              <a href="#" className="text-slate-500 hover:text-white transition-all"><Twitter size={18} /></a>
+              <a href="#" className="text-slate-500 hover:text-white transition-all"><Linkedin size={18} /></a>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Platform */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-white/50 inline-block">Platform</h4>
-            <ul className="space-y-4">
-              <li><Link to="/" className="text-gray-400 hover:text-purple-400 text-sm transition-colors flex items-center gap-2 group">Search <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" /></Link></li>
-              <li><Link to="/shelf" className="text-gray-400 hover:text-purple-400 text-sm transition-colors flex items-center gap-2 group">My Shelf <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" /></Link></li>
-              <li><Link to="/settings" className="text-gray-400 hover:text-purple-400 text-sm transition-colors">Settings</Link></li>
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Platform</h4>
+            <ul className="space-y-3 text-sm text-slate-500">
+              <li><Link to="/" className="hover:text-blue-500 transition-colors">Search</Link></li>
+              <li><Link to="/browse" className="hover:text-blue-500 transition-colors">Browse</Link></li>
+              <li><Link to="/shelf" className="hover:text-blue-500 transition-colors">My Shelf</Link></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-white/50 inline-block">Resources</h4>
-            <ul className="space-y-4">
-              <li><a href="#" className="text-gray-400 hover:text-purple-400 text-sm transition-colors">Documentation</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-purple-400 text-sm transition-colors">API Guide</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-purple-400 text-sm transition-colors text-xs inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-300">v2.0 Beta</a></li>
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Resources</h4>
+            <ul className="space-y-3 text-sm text-slate-500">
+              <li><Link to="/docs" className="hover:text-blue-500 transition-colors">Documentation</Link></li>
+              <li><Link to="/api-guide" className="hover:text-blue-500 transition-colors">API Guide</Link></li>
+              <li><Link to="/privacy" className="hover:text-blue-500 transition-colors">Privacy Policy</Link></li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-white/50 inline-block">Get In Touch</h4>
-            <ul className="space-y-4">
-              <li>
-                <a href="mailto:hello@tomoshelf.com" className="group flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
-                  <div className="p-2 rounded-lg bg-purple-500/10 text-purple-400 group-hover:scale-110 transition-transform">
-                    <Mail size={16} />
-                  </div>
-                  <span className="text-gray-400 text-sm group-hover:text-white transition-colors">hello@tomoshelf.com</span>
-                </a>
-              </li>
-            </ul>
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Contact</h4>
+            <p className="text-sm text-slate-500 mb-4 font-medium">Have questions? Reach out to us.</p>
+            <a href="mailto:hello@tomoshelf.com" className="text-sm font-bold text-blue-500 hover:text-blue-400 transition-colors">
+              hello@tomoshelf.com
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-gray-500 text-xs font-medium">
-            © {currentYear} TomoShelf. All rights reserved.
-          </p>
-          <div className="flex items-center gap-2 text-gray-500 text-xs font-medium bg-white/5 px-4 py-1.5 rounded-full border border-white/5">
-            Built with <Heart size={12} className="text-red-500 fill-red-500 animate-pulse" /> by 
-            <span className="text-gray-300 font-bold hover:text-purple-400 cursor-pointer transition-colors">TomoTeam</span>
+        {/* Bottom */}
+        <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-widest text-slate-600">
+          <p>© {currentYear} TomoShelf. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            Built with <Heart size={10} className="text-red-500 fill-red-500" /> by TomoTeam
           </div>
         </div>
       </div>
