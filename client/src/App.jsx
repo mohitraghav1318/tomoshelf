@@ -5,6 +5,7 @@ import BookDetail from './pages/BookDetail';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import MyShelf from './pages/MyShelf';
+import Browse from './pages/Browse';
 import BackendWakeup from './components/BackendWakeup';  // ADD
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/shelf" element={<MyShelf />} />
+            <Route path="/browse" element={<Browse />} />
           </Routes>
         </div>
       </BackendWakeup>  {/* ADD */}

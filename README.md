@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="client/public/favicon.svg" width="64" height="64" alt="TomoShelf Logo" />
+<img src="client/public/favicon.svg" width="80" height="80" alt="TomoShelf Logo" />
 
 # TomoShelf
 
@@ -21,226 +21,136 @@
 |---|---|
 | 🔍 **Search & Browse** | Search millions of books via Google Books API, filter by genre |
 | 📖 **Book Detail** | Rich book pages with cover, description, series detection, and buy links |
-| ⭐ **Star Ratings** | Rate any book on your shelf from 1–5 stars |
+| ⭐ **Star Ratings** | Quick 1–5 star ratings to track your personal enjoyment |
 | 🗂️ **Personal Shelf** | Track books as *Want to Read*, *Reading*, or *Completed* |
 | 📊 **Reading Progress** | Update current page, visual progress bar per book |
-| 🔮 **Recommendations** | Genre-based suggestions from your completed books |
-| 🛒 **Buy Links** | Amazon, Goodreads, and library search links on every book |
-| 🔐 **Auth** | Secure JWT signup & login, protected routes |
-| ⚡ **Cold Start UX** | Friendly wake-up screen for Render free-tier backend delay |
+| 🔮 **Recommendations** | Genre-based suggestions derived from your reading history |
+| 🛒 **Buy Links** | Amazon, Goodreads, and local library search links on every book |
+| 🔐 **Secure Auth** | JWT-based authentication for private shelves |
+| ⚡ **Cold Start UX** | Optimized "Wake-up" screen for free-tier backend hosting |
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **React 18** + Vite
-- **Tailwind CSS** — dark-themed UI
-- **React Router v6** — client-side routing
-- **Context API** — global auth state
-- **Lucide React** — icons
+- **React 18** + Vite (Ultra-fast HMR)
+- **Tailwind CSS** — Modern, dark-themed responsive UI
+- **React Router v6** — Seamless client-side navigation
+- **Context API** — Global state management for Auth
+- **Lucide React** — Beautiful, consistent iconography
+- **Axios** — Robust HTTP client for API requests
 
 ### Backend
-- **Node.js** + **Express.js**
-- **MongoDB** + **Mongoose**
-- **bcryptjs** — password hashing
-- **jsonwebtoken** — JWT auth
-- **Axios** — Google Books API calls
-
-### Deployed On
-- Frontend → [Vercel](https://vercel.com)
-- Backend → [Render](https://render.com)
-- Database → [MongoDB Atlas](https://mongodb.com/atlas)
+- **Node.js** + **Express.js** — Fast, unopinionated web framework
+- **MongoDB** + **Mongoose** — Schema-based ODM for data modeling
+- **bcryptjs** — Industry-standard password hashing
+- **jsonwebtoken** — Secure JWT authentication
+- **dotenv** — Confidential environment configuration
 
 ---
 
 ## 📁 Project Structure
 
-```
+```bash
 tomoshelf/
-│
-├── client/                        ← React + Vite frontend
-│   ├── public/
-│   │   └── favicon.svg            ← SVG logo
-│   └── src/
-│       ├── components/
-│       │   ├── Navbar.jsx          ← Responsive navbar with glass blur
-│       │   ├── BookCard.jsx
-│       │   ├── SearchBar.jsx
-│       │   ├── StarRating.jsx      ← Interactive 1–5 star rating
-│       │   ├── ProgressModal.jsx   ← Update reading progress
-│       │   └── BackendWakeup.jsx   ← Render cold-start handler
-│       ├── pages/
-│       │   ├── Home.jsx            ← Search + genre recommendations
-│       │   ├── Browse.jsx
-│       │   ├── BookDetail.jsx      ← Full book page + buy links + series
-│       │   ├── MyShelf.jsx         ← Personal shelf with filters & stats
-│       │   ├── Login.jsx
-│       │   └── Signup.jsx
-│       ├── context/
-│       │   └── AuthContext.jsx     ← Global auth state
-│       ├── services/
-│       │   ├── api.js              ← Google Books API + recommendations
-│       │   └── shelfService.js     ← Shelf CRUD API calls
-│       └── App.jsx
-│
-└── server/                        ← Node.js + Express backend
-    ├── controllers/
-    │   ├── authController.js       ← signup, login, JWT
-    │   └── shelfController.js      ← shelf CRUD + rating
-    ├── models/
-    │   ├── User.js                 ← bcrypt password hash
-    │   └── ShelfEntry.js           ← status, progress, rating fields
-    ├── routes/
-    │   ├── authRoutes.js
-    │   ├── shelfRoutes.js
-    │   └── bookRoutes.js           ← Google Books proxy + buy links
-    ├── middleware/
-    │   └── authMiddleware.js       ← JWT verification
-    ├── config/
-    │   └── db.js                   ← MongoDB Atlas connection
-    └── index.js                    ← Entry point + /api/health route
+├── client/                     # React + Vite frontend
+│   ├── src/
+│   │   ├── components/         # Reusable UI (Navbar, Stars, Modals)
+│   │   ├── context/            # AuthContext for global state
+│   │   ├── pages/              # Main view entry points
+│   │   └── services/           # API interaction layer
+├── server/                     # Node.js + Express backend
+│   ├── controllers/            # Request handlers
+│   ├── models/                 # Mongoose schemas (User, ShelfEntry)
+│   ├── routes/                 # API endpoint definitions
+│   └── middleware/             # JWT auth validation
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
-
-- Node.js **v18+**
-- A [MongoDB Atlas](https://www.mongodb.com/atlas) cluster (free tier works)
-- A [Google Books API key](https://developers.google.com/books/docs/v1/using#APIKey)
-
-### 1. Clone the repo
+### 1. Clone & Install
 
 ```bash
 git clone https://github.com/mohitraghav1318/tomoshelf.git
 cd tomoshelf
+
+# Install backend dependencies
+cd server && npm install
+
+# Install frontend dependencies
+cd ../client && npm install
 ```
 
-### 2. Set up the server
+### 2. Configure Environment
 
-```bash
-cd server
-npm install
-```
-
-Create `server/.env`:
-
+**`server/.env`**
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_secret_key_make_it_long_and_random
-GOOGLE_BOOKS_API_KEY=your_google_books_api_key
+MONGO_URI=your_mongodb_atlas_uri
+JWT_SECRET=your_jwt_secret
+GOOGLE_BOOKS_API_KEY=your_google_books_key
 ```
 
-Start the backend:
-
-```bash
-npm run dev
-# Runs on http://localhost:5000
-```
-
-### 3. Set up the client
-
-```bash
-cd ../client
-npm install
-```
-
-Create `client/.env`:
-
+**`client/.env`**
 ```env
 VITE_API_URL=http://localhost:5000/api
 VITE_API_URL_SHELF=http://localhost:5000/api/shelf
 ```
 
-Start the frontend:
+### 3. Run Development Servers
 
 ```bash
+# In server directory
 npm run dev
-# Runs on http://localhost:5173
+
+# In client directory
+npm run dev
 ```
 
 ---
 
-## 🔌 API Reference
+## 🗺️ Roadmap (Upcoming Features)
 
-### Auth — `/api/auth`
+We are constantly working to make TomoShelf the best personal library manager. Here is what's coming next:
 
-| Method | Endpoint    | Auth | Description          |
-|--------|-------------|------|----------------------|
-| POST   | `/signup`   | ✗    | Register new user    |
-| POST   | `/login`    | ✗    | Login, receive JWT   |
-| GET    | `/me`       | ✓    | Get current user     |
+### 🌟 Core Enhancements
+- [ ] **Community & Social**: Public user profiles, following friends, and a global "Activity Feed" to see what others are reading.
+- [ ] **Detailed Reviews**: Move beyond stars — leave in-depth text reviews and comment on your friends' thoughts.
+- [ ] **Custom Collections**: Create your own themed lists like "Summer Beach Reads", "Sci-Fi Hall of Fame", or "To Buy Later".
+- [ ] **Reading Analytics**: Visual dashboard with charts for books read per month, favorite genres, and yearly reading goals.
+- [ ] **Import/Export Tool**: Easily migrate your data from Goodreads or OpenLibrary via CSV import.
 
-### Shelf — `/api/shelf`
-
-| Method | Endpoint          | Auth | Description                      |
-|--------|-------------------|------|----------------------------------|
-| GET    | `/`               | ✓    | Get shelf (optional `?status=`)  |
-| POST   | `/`               | ✓    | Add book to shelf                |
-| PUT    | `/:id`            | ✓    | Update status, progress, rating  |
-| DELETE | `/:id`            | ✓    | Remove book from shelf           |
-| GET    | `/check/:bookId`  | ✓    | Check if book is on shelf        |
-
-### Books — `/api/books`
-
-| Method | Endpoint    | Auth | Description                     |
-|--------|-------------|------|---------------------------------|
-| GET    | `/search`   | ✗    | Search Google Books by query    |
-| GET    | `/:id`      | ✗    | Get single book details         |
-| GET    | `/health`   | ✗    | Server health check (cold start)|
+### 🎨 UI/UX Improvements
+- [ ] **Dark/Light Mode Toggle**: Choose your preferred viewing experience.
+- [ ] **Offline Mode**: Cache your shelf for viewing when you don't have an internet connection (PWA support).
+- [ ] **Batch Actions**: Edit multiple books on your shelf at once (move to completed, delete, etc.).
 
 ---
 
-## 🔒 Environment Variables
+## 📸 Screenshots
 
-> ⚠️ Never commit `.env` files. Both are in `.gitignore`.
-
-**`server/.env`**
-
-| Variable | Description |
-|---|---|
-| `PORT` | Express server port (default 5000) |
-| `MONGO_URI` | MongoDB Atlas connection string |
-| `JWT_SECRET` | Secret for signing JWT tokens — keep it long and random |
-| `GOOGLE_BOOKS_API_KEY` | From Google Cloud Console |
-
-**`client/.env`**
-
-| Variable | Description |
-|---|---|
-| `VITE_API_URL` | Base API URL e.g. `http://localhost:5000/api` |
-| `VITE_API_URL_SHELF` | Shelf API URL e.g. `http://localhost:5000/api/shelf` |
+> *Coming soon*
 
 ---
 
-## 🌐 Deployment
+## 🤝 Contributing
 
-### Frontend → Vercel
+We love contributions! Whether it's a bug fix, a new feature, or better documentation:
 
-```bash
-# In Vercel dashboard, set environment variables:
-VITE_API_URL=https://your-backend.onrender.com/api
-VITE_API_URL_SHELF=https://your-backend.onrender.com/api/shelf
-```
+1. **Fork** the repository
+2. **Branch**: `git checkout -b feat/your-awesome-feature`
+3. **Commit**: `git commit -m 'feat: add amazing feature'`
+4. **Push**: `git push origin feat/your-awesome-feature`
+5. **PR**: Open a Pull Request for review
 
-### Backend → Render
+---
 
-```bash
-# Build command:
-npm install
+## 📄 License
 
-# Start command:
-node index.js
-
-# Set environment variables in Render dashboard (same as server/.env)
-```
-
-> **Note:** Render's free tier spins down after 15 min of inactivity.
-> TomoShelf handles this gracefully with the built-in wake-up screen.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 

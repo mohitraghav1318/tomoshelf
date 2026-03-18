@@ -8,6 +8,7 @@ import { getBookById } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { checkBookInShelf, addBookToShelf, removeBookFromShelf, updateShelfEntry } from '../services/shelfService';
 import StarRating from '../components/StarRating';
+import SkeletonCard from "../components/SkeletonCard";
 
 const BookDetail = () => {
   const { id } = useParams();
@@ -109,10 +110,22 @@ const BookDetail = () => {
     return null;
   };
 
+  // In BookDetail.jsx, replace your loading state with:
   if (loading) {
+    const p = "animate-pulse bg-gray-200 dark:bg-gray-700 rounded";
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500" />
+      <div className="max-w-3xl mx-auto p-6 flex gap-8">
+        <div className={`${p} w-36 h-52 shrink-0`} />
+        <div className="flex-1 space-y-3">
+          <div className={`${p} h-6 w-2/3`} />
+          <div className={`${p} h-4 w-1/3`} />
+          <div className={`${p} h-4 w-1/4`} />
+          <div className="space-y-2 pt-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className={`${p} h-3 w-full`} />
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

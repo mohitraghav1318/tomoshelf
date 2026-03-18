@@ -5,6 +5,7 @@ import { getShelf, removeBookFromShelf, updateShelfEntry } from '../services/she
 import { BookOpen, Trash2, Edit } from 'lucide-react';
 import ProgressModal from '../components/ProgressModal';
 import StarRating from '../components/StarRating';
+import SkeletonCard from "../components/SkeletonCard";
 
 const MyShelf = () => {
     const [shelf, setShelf] = useState([]);
@@ -111,8 +112,10 @@ const MyShelf = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+            <div className="space-y-4 p-4">
+                {[...Array(5)].map((_, i) => (
+                    <SkeletonCard key={i} variant="shelf" />
+                ))}
             </div>
         );
     }

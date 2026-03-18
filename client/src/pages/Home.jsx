@@ -5,6 +5,7 @@ import SearchResults from '../components/SearchResults';
 import { searchBooks, getRecommendations } from '../services/api';  // ADD getRecommendations
 import { useAuth } from '../context/AuthContext';                    // ADD this
 import { getShelf } from '../services/shelfService';                // ADD this
+import SkeletonCard from "../components/SkeletonCard";
 
 const Home = () => {
   const [books, setBooks] = useState([]);
@@ -65,6 +66,16 @@ const Home = () => {
   const handleBookClick = (bookId) => {
     navigate(`/book/${bookId}`);
   };
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-4">
+        {[...Array(8)].map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-24 px-4">
