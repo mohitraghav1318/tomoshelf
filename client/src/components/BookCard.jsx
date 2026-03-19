@@ -4,7 +4,7 @@ const BookCard = ({ book, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-purple-500 transition-all cursor-pointer group"
+      className="bg-neutral-950 border border-gray-800 rounded-lg overflow-hidden hover:border-red-500 transition-all cursor-pointer group"
     >
       <div className="aspect-[2/3] bg-gray-800 relative overflow-hidden">
         {book.thumbnail ? (

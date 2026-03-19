@@ -21,17 +21,17 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 ${
-      scrolled ? 'bg-slate-950/95 border-b border-slate-800 py-3' : 'bg-transparent py-5'
+      scrolled ? 'bg-black/95 border-b border-slate-800 py-3' : 'bg-transparent py-5'
     }`}>
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 group">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-black text-xl leading-none">
+          <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white font-black text-xl leading-none">
             T
           </div>
           <span className="text-xl font-black tracking-tight text-white">
-            Tomo<span className="text-blue-500">Shelf</span>
+            Tomo<span className="text-red-500">Shelf</span>
           </span>
         </Link>
 
@@ -46,7 +46,7 @@ export default function Navbar() {
               key={to}
               to={to}
               className={`text-sm font-bold tracking-wide transition-colors ${
-                active(to) ? 'text-blue-500' : 'text-slate-400 hover:text-white'
+                active(to) ? 'text-red-500' : 'text-slate-400 hover:text-white'
               }`}
             >
               {label}
@@ -62,7 +62,7 @@ export default function Navbar() {
                 to="/settings"
                 className="flex items-center gap-2 group"
               >
-                <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 border border-slate-700 group-hover:border-blue-500 transition-colors">
+                <div className="w-7 h-7 rounded-full bg-slate-800 flex items-center justify-center text-xs font-bold text-slate-300 border border-slate-700 group-hover:border-red-500 transition-colors">
                   {user?.username?.[0]?.toUpperCase()}
                 </div>
                 <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors">
@@ -82,7 +82,7 @@ export default function Navbar() {
               <Link to="/login" className="text-sm font-bold text-slate-400 hover:text-white transition-colors">
                 Login
               </Link>
-              <Link to="/signup" className="px-5 py-2 rounded-xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-900/20">
+              <Link to="/signup" className="px-5 py-2 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all shadow-lg shadow-red-900/20">
                 Sign Up
               </Link>
             </div>
@@ -97,7 +97,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {open && (
-        <div className="absolute top-full inset-x-0 bg-slate-900 border-b border-slate-800 p-6 md:hidden flex flex-col gap-6 animate-in slide-in-from-top duration-300">
+        <div className="absolute top-full inset-x-0 bg-neutral-950 border-b border-slate-800 p-6 md:hidden flex flex-col gap-6 animate-in slide-in-from-top duration-300">
           {[
             { to: '/', label: 'Home' },
             { to: '/browse', label: 'Browse' },
@@ -106,7 +106,7 @@ export default function Navbar() {
             <Link
               key={to}
               to={to}
-              className={`text-lg font-bold ${active(to) ? 'text-blue-500' : 'text-slate-300'}`}
+              className={`text-lg font-bold ${active(to) ? 'text-red-500' : 'text-slate-300'}`}
             >
               {label}
             </Link>
@@ -120,7 +120,7 @@ export default function Navbar() {
           ) : (
             <div className="flex flex-col gap-4">
               <Link to="/login" className="text-slate-300 font-bold">Login</Link>
-              <Link to="/signup" className="py-3 rounded-xl bg-blue-600 text-white font-bold text-center">Sign Up</Link>
+              <Link to="/signup" className="py-3 rounded-xl bg-red-600 text-white font-bold text-center">Sign Up</Link>
             </div>
           )}
         </div>

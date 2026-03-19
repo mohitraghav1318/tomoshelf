@@ -31,33 +31,35 @@ const Signup = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="min-h-screen flex items-center justify-center px-4 bg-black">
             <div className="max-w-md w-full">
                 {/* Header */}
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-4">
-                        <div className="bg-purple-600 p-3 rounded-full">
+                        <div className="bg-red-600 p-3 rounded-full shadow-lg shadow-red-600/20">
                             <UserPlus className="w-8 h-8 text-white" />
                         </div>
                     </div>
-                    <h2 className="text-3xl font-bold text-white mb-2">Join TomoShelf</h2>
-                    <p className="text-gray-400">Start tracking your reading journey today</p>
+                    <h2 className="text-3xl font-black text-white mb-2 tracking-tight italic">Join TomoShelf</h2>
+                    <p className="text-slate-500 font-medium text-sm">Start tracking your library today</p>
                 </div>
 
                 {/* Error Message */}
                 {error && (
-                    <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
-                        <AlertCircle className="w-5 h-5" />
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-500 px-4 py-3 rounded-xl mb-6 flex items-center gap-2 text-sm font-medium animate-in fade-in slide-in-from-top-2">
+                        <AlertCircle className="w-5 h-5 flex-shrink-0" />
                         <span>{error}</span>
                     </div>
                 )}
 
                 {/* Signup Form */}
-                <form onSubmit={handleSubmit} className="bg-gray-900 border border-gray-800 rounded-lg p-8">
-                    <div className="space-y-6">
+                <form onSubmit={handleSubmit} className="bg-neutral-950 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-red-600/5 blur-3xl -mr-12 -mt-12 group-hover:bg-red-600/10 transition-all duration-500"></div>
+                    
+                    <div className="space-y-6 relative z-10">
                         {/* Username */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">
                                 Username
                             </label>
                             <input
@@ -66,29 +68,29 @@ const Signup = () => {
                                 onChange={(e) => setUsername(e.target.value)}
                                 required
                                 minLength={3}
-                                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full px-4 py-3.5 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-700 focus:outline-none focus:border-red-500 transition-all font-medium"
                                 placeholder="johndoe"
                             />
                         </div>
 
                         {/* Email */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
-                                Email
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">
+                                Email Address
                             </label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
-                                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full px-4 py-3.5 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-700 focus:outline-none focus:border-red-500 transition-all font-medium"
                                 placeholder="you@example.com"
                             />
                         </div>
 
                         {/* Password */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-2">
+                        <div className="space-y-2">
+                            <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">
                                 Password
                             </label>
                             <input
@@ -97,28 +99,28 @@ const Signup = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 minLength={6}
-                                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                className="w-full px-4 py-3.5 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-700 focus:outline-none focus:border-red-500 transition-all font-medium"
                                 placeholder="••••••••"
                             />
-                            <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+                            <p className="text-[10px] text-slate-600 font-medium mt-1 ml-1 italic">Security minimum: 6 characters</p>
                         </div>
 
                         {/* Submit Button */}
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-lg transition-colors"
+                            className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-900/50 disabled:cursor-not-allowed text-white font-black py-4 rounded-xl transition-all shadow-lg shadow-red-600/20 uppercase tracking-widest text-xs"
                         >
-                            {loading ? 'Creating account...' : 'Sign Up'}
+                            {loading ? 'Creating account...' : 'Create My Shelf'}
                         </button>
                     </div>
                 </form>
 
                 {/* Login Link */}
-                <p className="text-center text-gray-400 mt-6">
+                <p className="text-center text-slate-500 mt-8 text-sm font-medium">
                     Already have an account?{' '}
-                    <Link to="/login" className="text-purple-500 hover:text-purple-400 font-semibold">
-                        Login
+                    <Link to="/login" className="text-red-500 hover:text-red-400 font-bold transition-colors">
+                        Sign In
                     </Link>
                 </p>
             </div>

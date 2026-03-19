@@ -7,7 +7,7 @@
 @layer base {
   body {
     font-family: 'Montserrat', sans-serif;
-    @apply bg-slate-950 text-slate-200 antialiased;
+    @apply bg-black text-slate-200 antialiased;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -23,5 +23,5 @@
 }
 
 .bg-dark-soft {
-  background: #0f172a; /* Slate 900 */
+  background: #09090b; /* Zinc 950 / Black-ish */
 }

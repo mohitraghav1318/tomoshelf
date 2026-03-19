@@ -5,7 +5,7 @@ const PrivacyPolicy = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen pt-32 pb-20 px-6 bg-slate-950 font-sans text-slate-200">
+        <div className="min-h-screen pt-32 pb-20 px-6 bg-black font-sans text-slate-200">
             <div className="max-w-4xl mx-auto">
                 <button 
                     onClick={() => navigate(-1)}
@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
                 </button>
 
                 <header className="mb-16">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest mb-6">
                         <Lock size={12} />
                         Legal
                     </div>
@@ -26,10 +26,10 @@ const PrivacyPolicy = () => {
                     </p>
                 </header>
 
-                <div className="space-y-10 bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-3xl shadow-xl">
+                <div className="space-y-10 bg-neutral-950 border border-slate-800 p-8 md:p-12 rounded-3xl shadow-xl">
                     <section className="space-y-4">
                         <div className="flex items-center gap-3 text-white mb-2">
-                            <Eye className="text-blue-500" size={20} />
+                            <Eye className="text-red-500" size={20} />
                             <h2 className="text-xl font-bold">Information Collection</h2>
                         </div>
                         <p className="text-slate-400 leading-relaxed">
@@ -39,7 +39,7 @@ const PrivacyPolicy = () => {
 
                     <section className="space-y-4">
                         <div className="flex items-center gap-3 text-white mb-2">
-                            <Shield className="text-blue-500" size={20} />
+                            <Shield className="text-red-500" size={20} />
                             <h2 className="text-xl font-bold">Data Security</h2>
                         </div>
                         <p className="text-slate-400 leading-relaxed">
@@ -49,7 +49,7 @@ const PrivacyPolicy = () => {
 
                     <section className="space-y-4">
                         <div className="flex items-center gap-3 text-white mb-2">
-                            <FileText className="text-blue-500" size={20} />
+                            <FileText className="text-red-500" size={20} />
                             <h2 className="text-xl font-bold">Your Rights</h2>
                         </div>
                         <p className="text-slate-400 leading-relaxed">

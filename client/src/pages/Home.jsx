@@ -11,7 +11,7 @@ import SkeletonCard from "../components/SkeletonCard";
 const SimpleBookCard = ({ book, onClick }) => (
   <div
     onClick={() => onClick(book.id)}
-    className="group cursor-pointer bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-blue-500 transition-all duration-200 shadow-lg"
+    className="group cursor-pointer bg-neutral-950 border border-slate-800 rounded-xl overflow-hidden hover:border-red-500 transition-all duration-200 shadow-lg"
   >
     <div className="aspect-[2/3] relative">
       {book.thumbnail ? (
@@ -25,7 +25,7 @@ const SimpleBookCard = ({ book, onClick }) => (
       )}
     </div>
     <div className="p-3">
-      <h3 className="text-white font-semibold text-sm line-clamp-1 group-hover:text-blue-400 transition-colors">
+      <h3 className="text-white font-semibold text-sm line-clamp-1 group-hover:text-red-400 transition-colors">
         {book.title}
       </h3>
       <p className="text-slate-500 text-xs mt-1 truncate">
@@ -86,17 +86,17 @@ const Home = () => {
   const handleBookClick = (bookId) => navigate(`/book/${bookId}`);
 
   return (
-    <div className="min-h-screen bg-slate-950 font-sans text-slate-200">
+    <div className="min-h-screen bg-black font-sans text-slate-200">
       {/* Search Header */}
-      <section className="pt-32 pb-16 px-6 bg-slate-900/50 border-b border-slate-900 mt-2">
+      <section className="pt-32 pb-16 px-6 bg-neutral-950/50 border-b border-slate-900 mt-2">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
-            Discover Your Next <span className="text-blue-500">Masterpiece</span>
+            Discover Your Next <span className="text-red-500">Masterpiece</span>
           </h1>
           <p className="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">
             Search millions of books and track your reading journey with ease.
           </p>
-          <div className="max-w-2xl mx-auto bg-slate-900 border border-slate-800 p-1.5 rounded-2xl shadow-xl">
+          <div className="max-w-2xl mx-auto bg-neutral-950 border border-slate-800 p-1.5 rounded-2xl shadow-xl">
             <SearchBar onSearch={handleSearch} />
           </div>
 
@@ -129,13 +129,13 @@ const Home = () => {
           <div className="mt-12">
             {recLoading ? (
               <div className="flex justify-center py-20">
-                <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
               </div>
             ) : recommendations.length > 0 ? (
               <div className="space-y-8">
-                <div className="border-l-4 border-blue-500 pl-4">
+                <div className="border-l-4 border-red-500 pl-4">
                   <h2 className="text-2xl font-bold text-white">Recommended for You</h2>
-                  <p className="text-slate-500 text-sm">Because you read <span className="text-blue-400">{recGenre}</span></p>
+                  <p className="text-slate-500 text-sm">Because you read <span className="text-red-400">{recGenre}</span></p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                   {recommendations.map((book) => (
@@ -144,7 +144,7 @@ const Home = () => {
                 </div>
               </div>
             ) : (
-              <div className="text-center py-20 bg-slate-900/30 rounded-3xl border border-slate-900/50">
+              <div className="text-center py-20 bg-neutral-950/30 rounded-3xl border border-slate-900/50">
                 <h3 className="text-xl font-bold text-white mb-2">Your shelf is empty</h3>
                 <p className="text-slate-500">Start searching and adding books to see recommendations!</p>
               </div>
@@ -154,21 +154,21 @@ const Home = () => {
 
         {/* Auth CTA */}
         {!isAuthenticated && books.length === 0 && (
-          <div className="mt-20 p-12 bg-blue-600 rounded-3xl text-center shadow-2xl">
+          <div className="mt-20 p-12 bg-red-600 rounded-3xl text-center shadow-2xl">
             <h2 className="text-3xl font-black text-white mb-4 italic">Your reading legacy starts today.</h2>
-            <p className="text-blue-100 mb-10 max-w-md mx-auto opacity-90">
+            <p className="text-red-100 mb-10 max-w-md mx-auto opacity-90">
               Join thousands of readers tracking their literary journey — one shelf at a time.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button
                 onClick={() => navigate('/signup')}
-                className="px-10 py-3 rounded-xl bg-white text-blue-600 font-bold hover:bg-slate-100 transition-all"
+                className="px-10 py-3 rounded-xl bg-white text-red-600 font-bold hover:bg-slate-100 transition-all"
               >
                 Get Started
               </button>
               <button
                 onClick={() => navigate('/login')}
-                className="px-10 py-3 rounded-xl bg-blue-700 text-white font-bold hover:bg-blue-800 transition-all"
+                className="px-10 py-3 rounded-xl bg-red-700 text-white font-bold hover:bg-red-800 transition-all"
               >
                 Sign In
               </button>

@@ -23,7 +23,7 @@ const ProgressModal = ({ entry, onClose, onUpdate }) => {
 
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-gray-900 border border-gray-800 rounded-lg max-w-md w-full p-6">
+            <div className="bg-neutral-950 border border-gray-800 rounded-lg max-w-md w-full p-6">
                 {/* Header */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
@@ -50,7 +50,7 @@ const ProgressModal = ({ entry, onClose, onUpdate }) => {
                             max={totalPages}
                             value={currentPage}
                             onChange={(e) => setCurrentPage(Math.min(parseInt(e.target.value) || 0, totalPages))}
-                            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-red-500"
                         />
                         <p className="text-xs text-gray-500 mt-1">
                             Out of {totalPages} pages ({percentage}% complete)
@@ -61,7 +61,7 @@ const ProgressModal = ({ entry, onClose, onUpdate }) => {
                     <div className="mb-6">
                         <div className="w-full bg-gray-800 rounded-full h-3">
                             <div
-                                className="bg-purple-600 h-3 rounded-full transition-all duration-300"
+                                className="bg-red-600 h-3 rounded-full transition-all duration-300"
                                 style={{ width: `${percentage}%` }}
                             ></div>
                         </div>
@@ -111,7 +111,7 @@ const ProgressModal = ({ entry, onClose, onUpdate }) => {
                         <button
                             type="submit"
                             disabled={updating}
-                            className="flex-1 bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 text-white py-3 rounded-lg font-semibold transition-colors"
+                            className="flex-1 bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white py-3 rounded-lg font-semibold transition-colors"
                         >
                             {updating ? 'Updating...' : 'Update'}
                         </button>

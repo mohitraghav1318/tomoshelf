@@ -135,7 +135,7 @@ const BookDetail = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-4">Book not found</h2>
-          <button onClick={() => navigate('/')} className="text-purple-500 hover:text-purple-400">
+          <button onClick={() => navigate('/')} className="text-red-500 hover:text-red-400">
             Go back home
           </button>
         </div>
@@ -162,7 +162,7 @@ const BookDetail = () => {
           {/* Left Column */}
           <div className="flex flex-col items-center md:items-start">
 
-            <div className="w-full max-w-[300px] aspect-[2/3] bg-gray-900 rounded-lg overflow-hidden border border-gray-800 shadow-xl">
+            <div className="w-full max-w-[300px] aspect-[2/3] bg-neutral-950 rounded-lg overflow-hidden border border-gray-800 shadow-xl">
               {book.largeThumbnail || book.thumbnail ? (
                 <img
                   src={(book.largeThumbnail || book.thumbnail).replace('http://', 'https://')}
@@ -206,7 +206,7 @@ const BookDetail = () => {
                 <button
                   onClick={handleAddToShelf}
                   disabled={addingToShelf}
-                  className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-800 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
+                  className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
                 >
                   <Plus className="w-5 h-5" />
                   {addingToShelf ? 'Adding...' : 'Add to Shelf'}
@@ -258,7 +258,7 @@ const BookDetail = () => {
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white rounded-lg text-sm transition-colors"
                   >
-                    <ExternalLink className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                    <ExternalLink className="w-4 h-4 text-red-400 flex-shrink-0" />
                     Find in a library
                   </a>
                 </div>
@@ -275,8 +275,8 @@ const BookDetail = () => {
             {/* Series badge — only renders when a series is detected */}
             {seriesName && (
               <div className="flex items-center gap-2 mb-3">
-                <BookMarked className="w-4 h-4 text-purple-400 flex-shrink-0" />
-                <span className="text-sm text-purple-400 font-medium">
+                <BookMarked className="w-4 h-4 text-red-400 flex-shrink-0" />
+                <span className="text-sm text-red-400 font-medium">
                   {seriesName}
                 </span>
               </div>
@@ -344,7 +344,7 @@ const BookDetail = () => {
                 <h3 className="text-sm font-semibold text-gray-400 mb-2">GENRES</h3>
                 <div className="flex flex-wrap gap-2">
                   {book.categories.map((category, index) => (
-                    <span key={index} className="px-3 py-1 bg-gray-800 text-purple-400 rounded-full text-sm">
+                    <span key={index} className="px-3 py-1 bg-gray-800 text-red-400 rounded-full text-sm">
                       {category}
                     </span>
                   ))}

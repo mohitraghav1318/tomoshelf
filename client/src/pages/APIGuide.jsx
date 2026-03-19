@@ -5,7 +5,7 @@ const APIGuide = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen pt-32 pb-20 px-6 bg-slate-950 font-sans text-slate-200">
+        <div className="min-h-screen pt-32 pb-20 px-6 bg-black font-sans text-slate-200">
             <div className="max-w-5xl mx-auto">
                 <button 
                     onClick={() => navigate(-1)}
@@ -16,7 +16,7 @@ const APIGuide = () => {
                 </button>
 
                 <header className="mb-12">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-500 text-[10px] font-bold uppercase tracking-widest mb-6">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest mb-6">
                         <Code2 size={12} />
                         Developer API
                     </div>
@@ -26,7 +26,7 @@ const APIGuide = () => {
                     </p>
                 </header>
 
-                <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-xl">
+                <div className="bg-neutral-950 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-xl">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
                         {[
                             { icon: <Key size={20} />, title: 'Auth', desc: 'Secure JWT authentication.' },
@@ -34,7 +34,7 @@ const APIGuide = () => {
                             { icon: <Cpu size={20} />, title: 'Real-time', desc: 'Instant data sync.' }
                         ].map((item, i) => (
                             <div key={i} className="space-y-4">
-                                <div className="p-3 rounded-lg bg-blue-500/10 text-blue-500 w-fit">
+                                <div className="p-3 rounded-lg bg-red-500/10 text-red-500 w-fit">
                                     {item.icon}
                                 </div>
                                 <h3 className="text-lg font-bold text-white">{item.title}</h3>
@@ -45,8 +45,8 @@ const APIGuide = () => {
 
                     <div className="pt-10 border-t border-slate-800">
                         <h4 className="text-[10px] font-bold uppercase tracking-widest text-slate-600 mb-4">Sample Request</h4>
-                        <div className="bg-slate-950 rounded-xl p-6 font-mono text-sm border border-slate-800">
-                            <pre className="text-blue-400 overflow-x-auto">
+                        <div className="bg-black rounded-xl p-6 font-mono text-sm border border-slate-800">
+                            <pre className="text-red-400 overflow-x-auto">
 {`curl -X GET "https://api.tomoshelf.com/v1/shelf" \\
      -H "Authorization: Bearer YOUR_TOKEN"`}
                             </pre>

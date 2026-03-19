@@ -66,21 +66,21 @@ const BackendWakeup = ({ children }) => {
     }, []);
 
     if (showApp) return <div className="animate-in fade-in duration-500">{children}</div>;
-    if (status === 'checking') return <div className="min-h-screen bg-slate-950" />;
+    if (status === 'checking') return <div className="min-h-screen bg-black" />;
 
     return (
-        <div className="min-h-screen bg-slate-950 flex items-center justify-center p-6 font-sans">
+        <div className="min-h-screen bg-black flex items-center justify-center p-6 font-sans">
             <div className="w-full max-w-md text-center space-y-8">
                 <div className="text-5xl mb-4">📚</div>
                 <h1 className="text-3xl font-black text-white tracking-tight">
-                    Tomo<span className="text-blue-500">Shelf</span>
+                    Tomo<span className="text-red-500">Shelf</span>
                 </h1>
                 
                 <div className="space-y-4">
                     <p className="text-slate-400 font-medium h-6">{MESSAGES[msgIndex]}</p>
-                    <div className="w-full h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
+                    <div className="w-full h-2 bg-neutral-950 rounded-full overflow-hidden border border-slate-800">
                         <div 
-                            className="h-full bg-blue-600 transition-all duration-500 ease-out"
+                            className="h-full bg-red-600 transition-all duration-500 ease-out"
                             style={{ width: `${progress}%` }}
                         />
                     </div>

@@ -5,7 +5,7 @@ const Documentation = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen pt-32 pb-20 px-6 bg-slate-950 font-sans text-slate-200">
+        <div className="min-h-screen pt-32 pb-20 px-6 bg-black font-sans text-slate-200">
             <div className="max-w-5xl mx-auto">
                 <button 
                     onClick={() => navigate(-1)}
@@ -29,8 +29,8 @@ const Documentation = () => {
                         { icon: <Map size={24} />, title: 'Roadmap', desc: "See what's coming next, from social sharing to AI recommendations." },
                         { icon: <Terminal size={24} />, title: 'Keyboard Shortcuts', desc: 'Navigate your library like a pro with our productivity-focused hotkeys.' }
                     ].map((item, i) => (
-                        <div key={i} className="p-8 rounded-3xl bg-slate-900 border border-slate-800 hover:border-blue-500 transition-all shadow-lg group">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500 mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <div key={i} className="p-8 rounded-3xl bg-neutral-950 border border-slate-800 hover:border-red-500 transition-all shadow-lg group">
+                            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 mb-6 group-hover:bg-red-600 group-hover:text-white transition-all">
                                 {item.icon}
                             </div>
                             <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>

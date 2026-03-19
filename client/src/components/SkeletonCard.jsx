@@ -1,9 +1,9 @@
 const SkeletonCard = ({ variant = "book" }) => {
-    const pulse = "animate-pulse bg-slate-900 border border-slate-800 rounded-2xl";
+    const pulse = "animate-pulse bg-neutral-950 border border-slate-800 rounded-2xl";
 
     if (variant === "shelf") {
         return (
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 flex gap-6">
+            <div className="bg-neutral-950 border border-slate-800 rounded-2xl p-5 flex gap-6">
                 <div className={`${pulse} w-24 h-36 shrink-0`} />
                 <div className="flex-1 space-y-4 py-1">
                     <div className="space-y-2">

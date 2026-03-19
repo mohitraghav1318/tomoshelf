@@ -17,7 +17,7 @@ function App() {
   return (
     <BrowserRouter>
       <BackendWakeup>
-        <div className="flex flex-col min-h-screen bg-gray-950">
+        <div className="flex flex-col min-h-screen bg-black">
           <Navbar />
           <main className="flex-grow">
             <Routes>
