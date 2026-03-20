@@ -16,20 +16,25 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+
+// Import routes made by me
 const booksRoutes = require('./routes/books');
 const authRoutes = require('./routes/auth');
 const shelfRoutes = require('./routes/shelf');
+const settingsRoutes = require('./routes/settingsRoutes');
 
+// Use routes also know as controllers and api endpoints
 app.use('/api/books', booksRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/shelf', shelfRoutes);
+app.use('/api/settings', settingsRoutes);
 
-// Test route
+// Test route faltu hai
 app.get('/', (req, res) => {
   res.json({ message: 'TomoShelf API is running 🚀' });
 });
 
-// Start server
+// Start server and connect to MongoDB at the same time, if MongoDB connection fails, server won't start
 const startServer = async () => {
   try {
     // Connect to MongoDB
@@ -45,4 +50,5 @@ const startServer = async () => {
   }
 };
 
+// Call the function to start the server
 startServer();

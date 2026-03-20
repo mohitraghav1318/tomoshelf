@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -24,6 +25,26 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    twoFactorEnabled: {
+        type: Boolean,
+        default: false
+    },
+    twoFactorOTP: {
+        type: String,
+        default: null
+    },
+    twoFactorOTPExpires: {
+        type: Date,
+        default: null
+    },
+    deleteAccountOTP: {
+        type: String,
+        default: null
+    },
+    deleteAccountOTPExpires: {
+        type: Date,
+        default: null
     }
 });
 

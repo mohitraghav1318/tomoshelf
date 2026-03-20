@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
+const { sendOTP } = require('../services/emailService');
 
 // Generate JWT Token
 const generateToken = (userId) => {
@@ -14,25 +15,16 @@ exports.signup = async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        // Validate input
         if (!username || !email || !password) {
             return res.status(400).json({ error: 'Please provide all fields' });
         }
 
-        // Check if user already exists
         const userExists = await User.findOne({ $or: [{ email }, { username }] });
         if (userExists) {
             return res.status(400).json({ error: 'User already exists' });
         }
 
-        // Create user
-        const user = await User.create({
-            username,
-            email,
-            password
-        });
-
-        // Generate token
+        const user = await User.create({ username, email, password });
         const token = generateToken(user._id);
 
         res.status(201).json({
@@ -41,7 +33,8 @@ exports.signup = async (req, res) => {
             user: {
                 id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                twoFactorEnabled: user.twoFactorEnabled
             }
         });
     } catch (error) {
@@ -56,24 +49,37 @@ exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Validate input
         if (!email || !password) {
             return res.status(400).json({ error: 'Please provide email and password' });
         }
 
-        // Find user
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Check password
         const isMatch = await user.comparePassword(password);
         if (!isMatch) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
-        // Generate token
+        // If 2FA is enabled, send OTP and don't return token yet
+        if (user.twoFactorEnabled) {
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            user.twoFactorOTP = otp;
+            user.twoFactorOTPExpires = Date.now() + 10 * 60 * 1000;
+            await user.save();
+
+            await sendOTP(user.email, otp);
+
+            return res.json({
+                success: true,
+                twoFactorRequired: true,
+                userId: user._id,
+                message: 'Two-factor authentication code sent to email'
+            });
+        }
+
         const token = generateToken(user._id);
 
         res.json({
@@ -82,12 +88,51 @@ exports.login = async (req, res) => {
             user: {
                 id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                twoFactorEnabled: user.twoFactorEnabled
             }
         });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ error: 'Server error during login' });
+    }
+};
+
+// @desc    Verify 2FA login
+// @route   POST /api/auth/verify-2fa
+exports.verify2FALogin = async (req, res) => {
+    try {
+        const { userId, otp } = req.body;
+
+        const user = await User.findById(userId);
+        if (!user || !user.twoFactorOTP) {
+            return res.status(400).json({ error: 'Invalid request' });
+        }
+
+        if (user.twoFactorOTP !== otp || Date.now() > user.twoFactorOTPExpires) {
+            return res.status(400).json({ error: 'Invalid or expired code' });
+        }
+
+        // Clear OTP
+        user.twoFactorOTP = null;
+        user.twoFactorOTPExpires = null;
+        await user.save();
+
+        const token = generateToken(user._id);
+
+        res.json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                twoFactorEnabled: user.twoFactorEnabled
+            }
+        });
+    } catch (error) {
+        console.error('2FA Login verification error:', error);
+        res.status(500).json({ error: 'Server error during 2FA verification' });
     }
 };
 
