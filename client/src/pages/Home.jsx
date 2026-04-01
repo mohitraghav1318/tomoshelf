@@ -5,7 +5,8 @@ import SearchResults from '../components/SearchResults';
 import { searchBooks, getRecommendations } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import { getShelf } from '../services/shelfService';
-import SkeletonCard from "../components/SkeletonCard";
+import SkeletonCard from '../components/SkeletonCard';
+import BackendStatus from '../components/BackendStatus';
 
 /* ─── Simple Book Card ────────────────────────────────────────────────────── */
 const SimpleBookCard = ({ book, onClick }) => (
@@ -21,7 +22,9 @@ const SimpleBookCard = ({ book, onClick }) => (
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
       ) : (
-        <div className="w-full h-full flex items-center justify-center bg-slate-800 text-3xl">📖</div>
+        <div className="w-full h-full flex items-center justify-center bg-slate-800 text-3xl">
+          📖
+        </div>
       )}
     </div>
     <div className="p-3">
@@ -87,6 +90,9 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-black font-sans text-slate-200">
+      {/* Backend Status Banner - Shows if backend is waking up */}
+      <BackendStatus />
+
       {/* Search Header */}
       <section className="pt-32 pb-16 px-6 bg-neutral-950/50 border-b border-slate-900 mt-2">
         <div className="max-w-4xl mx-auto text-center">
@@ -101,15 +107,17 @@ const Home = () => {
           </div>
 
           <div className="flex flex-wrap justify-center gap-2 mt-8">
-            {['Manga', 'Fantasy', 'Self-Help', 'Sci-Fi', 'Classic'].map(genre => (
-              <button
-                key={genre}
-                onClick={() => handleSearch(genre)}
-                className="px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:border-slate-600 transition-all"
-              >
-                {genre}
-              </button>
-            ))}
+            {['Manga', 'Fantasy', 'Self-Help', 'Sci-Fi', 'Classic'].map(
+              (genre) => (
+                <button
+                  key={genre}
+                  onClick={() => handleSearch(genre)}
+                  className="px-4 py-1.5 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold hover:bg-slate-700 hover:border-slate-600 transition-all"
+                >
+                  {genre}
+                </button>
+              ),
+            )}
           </div>
         </div>
       </section>
@@ -118,7 +126,9 @@ const Home = () => {
       <main className="max-w-7xl mx-auto px-6 py-16">
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-            {[...Array(12)].map((_, i) => <SkeletonCard key={i} />)}
+            {[...Array(12)].map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
           </div>
         ) : (
           <SearchResults books={books} onBookClick={handleBookClick} />
@@ -134,19 +144,32 @@ const Home = () => {
             ) : recommendations.length > 0 ? (
               <div className="space-y-8">
                 <div className="border-l-4 border-red-500 pl-4">
-                  <h2 className="text-2xl font-bold text-white">Recommended for You</h2>
-                  <p className="text-slate-500 text-sm">Because you read <span className="text-red-400">{recGenre}</span></p>
+                  <h2 className="text-2xl font-bold text-white">
+                    Recommended for You
+                  </h2>
+                  <p className="text-slate-500 text-sm">
+                    Because you read{' '}
+                    <span className="text-red-400">{recGenre}</span>
+                  </p>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                   {recommendations.map((book) => (
-                    <SimpleBookCard key={book.id} book={book} onClick={handleBookClick} />
+                    <SimpleBookCard
+                      key={book.id}
+                      book={book}
+                      onClick={handleBookClick}
+                    />
                   ))}
                 </div>
               </div>
             ) : (
               <div className="text-center py-20 bg-neutral-950/30 rounded-3xl border border-slate-900/50">
-                <h3 className="text-xl font-bold text-white mb-2">Your shelf is empty</h3>
-                <p className="text-slate-500">Start searching and adding books to see recommendations!</p>
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Your shelf is empty
+                </h3>
+                <p className="text-slate-500">
+                  Start searching and adding books to see recommendations!
+                </p>
               </div>
             )}
           </div>
@@ -155,9 +178,12 @@ const Home = () => {
         {/* Auth CTA */}
         {!isAuthenticated && books.length === 0 && (
           <div className="mt-20 p-12 bg-red-600 rounded-3xl text-center shadow-2xl">
-            <h2 className="text-3xl font-black text-white mb-4 italic">Your reading legacy starts today.</h2>
+            <h2 className="text-3xl font-black text-white mb-4 italic">
+              Your reading legacy starts today.
+            </h2>
             <p className="text-red-100 mb-10 max-w-md mx-auto opacity-90">
-              Join thousands of readers tracking their literary journey — one shelf at a time.
+              Join thousands of readers tracking their literary journey — one
+              shelf at a time.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button
