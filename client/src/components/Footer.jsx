@@ -10,45 +10,114 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <Link to="/" className="text-xl font-black text-white tracking-tight">
+            <Link
+              to="/"
+              className="text-xl font-black text-white tracking-tight"
+            >
               Tomo<span className="text-red-500">Shelf</span>
             </Link>
             <p className="text-slate-500 text-sm leading-relaxed max-w-xs">
-              Your personal library, simplified. Track your collection and discover new worlds.
+              Your personal library, simplified. Track your collection and
+              discover new worlds.
             </p>
             <div className="flex gap-4">
-              <a href="https://github.com/mohitraghav1318" className="text-slate-500 hover:text-white transition-all"><Github size={18} /></a>
-              <a href="https://x.com/mohitraghav1318" className="text-slate-500 hover:text-white transition-all"><Twitter size={18} /></a>
-              <a href="https://www.linkedin.com/in/mohitraghav1318/" className="text-slate-500 hover:text-white transition-all"><Linkedin size={18} /></a>
+              <a
+                href="https://github.com/mohitraghav1318"
+                className="text-slate-500 hover:text-white transition-all"
+              >
+                <Github size={18} />
+              </a>
+              <a
+                href="https://x.com/mohitraghav1318"
+                className="text-slate-500 hover:text-white transition-all"
+              >
+                <Twitter size={18} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/mohitraghav1318/"
+                className="text-slate-500 hover:text-white transition-all"
+              >
+                <Linkedin size={18} />
+              </a>
             </div>
           </div>
 
           {/* Platform */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Platform</h4>
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">
+              Platform
+            </h4>
             <ul className="space-y-3 text-sm text-slate-500">
-              <li><Link to="/" className="hover:text-red-500 transition-colors">Search</Link></li>
-              <li><Link to="/browse" className="hover:text-red-500 transition-colors">Browse</Link></li>
-              <li><Link to="/shelf" className="hover:text-red-500 transition-colors">My Shelf</Link></li>
+              <li>
+                <Link to="/" className="hover:text-red-500 transition-colors">
+                  Search
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/browse"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  Browse
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/shelf"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  My Shelf
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Resources */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Resources</h4>
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">
+              Resources
+            </h4>
             <ul className="space-y-3 text-sm text-slate-500">
-              <li><Link to="/docs" className="hover:text-red-500 transition-colors">Documentation</Link></li>
-              <li><Link to="/api-guide" className="hover:text-red-500 transition-colors">API Guide</Link></li>
-              <li><Link to="/privacy" className="hover:text-red-500 transition-colors">Privacy Policy</Link></li>
+              <li>
+                <Link
+                  to="/docs"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  Documentation
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/api-guide"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  API Guide
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/privacy"
+                  className="hover:text-red-500 transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Contact */}
           <div>
-            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">Contact</h4>
-            <p className="text-sm text-slate-500 mb-4 font-medium">Have questions? Reach out to us.</p>
-            <a href="mailto:[EMAIL_ADDRESS]" className="text-sm font-bold text-red-500 hover:text-red-400 transition-colors">
-              [EMAIL_ADDRESS]
+            <h4 className="text-white font-bold mb-6 text-xs uppercase tracking-widest">
+              Contact
+            </h4>
+            <p className="text-sm text-slate-500 mb-4 font-medium">
+              Have questions? Reach out to us.
+            </p>
+            <a
+              href="mailto:mohitraghav1318@gmail.com"
+              className="text-sm font-bold text-red-500 hover:text-red-400 transition-colors"
+            >
+              Mail Us
             </a>
           </div>
         </div>
@@ -57,7 +126,8 @@ const Footer = () => {
         <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-bold uppercase tracking-widest text-slate-600">
           <p>© {currentYear} TomoShelf. All rights reserved.</p>
           <div className="flex items-center gap-2">
-            Built with <Heart size={10} className="text-red-500 fill-red-500" /> by TomoTeam
+            Built with <Heart size={10} className="text-red-500 fill-red-500" />{' '}
+            by TomoTeam
           </div>
         </div>
       </div>
